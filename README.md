@@ -1,196 +1,63 @@
 # lifelines-personality-stress-correlations
 
-Analysis scripts and reproducibility materials for the EJP manuscript *Familial Correlation between Personality and Stress Exposure: Insights from the Multigenerational Lifelines Cohort Study* (EJP-26-4766).
+Analysis code for EJP-26-4766 — *Familial Correlation between Personality and Stress Exposure: Insights from the Multigenerational Lifelines Cohort Study* (Lifelines cohort; ASReml-R ACE models).
 
-## Contents
+Individual-level data are **not** included. See [Data availability](#data-availability) and [`data/README.md`](data/README.md).
 
-- [Overview](#overview)
-- [Repository tree](#repository-tree)
-- [How to run (script by script)](#how-to-run-script-by-script)
-- [Upload to GitHub](#upload-to-github)
-- [ACE models with ASReml-R](#ace-models-with-asreml-r)
-- [Software](#software)
-- [Data availability](#data-availability)
-- [Open Science](#open-science)
-- [Citation](#citation)
+## Scripts
 
-## Overview
+Run from the repository root. Always start with `01_Config/01_setup.R`.
 
-**Background:** Personality traits and stress exposures co-occur in the population, but the relative roles of shared genetic and environmental factors in their overlap are not fully understood in large, multigenerational samples. We analysed eight phenotypes (five stress-related measures and three personality domains) in the Lifelines cohort using pedigree-based ACE models in ASReml-R.
+| # | Script | What it does | Manuscript output |
+|---|--------|--------------|-------------------|
+| — | [`01_Config/01_setup.R`](01_Config/01_setup.R) | Paths, packages, phenotypes, Bonferroni thresholds (/16 uni, /75 bivar), plotting palette | — |
+| — | [`01_Config/01_helpers.R`](01_Config/01_helpers.R) | Shared utilities (`inverse_normal`, `save_table`, `save_figure`, `ct_dichotomous_moderate`) | — |
+| 1 | [`02_Data_Preparation/02a_score_construction.R`](02_Data_Preparation/02a_score_construction.R) | Item-level scoring: CTQ-SF, Loneliness, SPF-IL, per-wave LTE/LDI → `data/phenotypes_lifelines.Rdata` | Suppl. S7e (Cronbach α) |
+| 2 | [`02_Data_Preparation/02_data_preparation.R`](02_Data_Preparation/02_data_preparation.R) | Merge pedigree, household, phenotypes, personality; adult sample; LTE/LDI latent factors (`lavaan`); dichotomous CT for liability (subscale Bernstein thresholds) → `data/data_prepared.Rdata` | — |
+| 3 | [`03_Descriptives/03_descriptives.R`](03_Descriptives/03_descriptives.R) | Table 1; sex-stratified descriptives | Table 1; S7a–S7b |
+| 4 | [`03_Descriptives/03b_anova_sex_diff.R`](03_Descriptives/03b_anova_sex_diff.R) | Sex-difference ANOVA from published means (no Lifelines data) | S7c |
+| 5 | [`03_Descriptives/03c_age_brackets.R`](03_Descriptives/03c_age_brackets.R) | Phenotype descriptives by age bracket | S7d |
+| 6 | [`03_Descriptives/03d_cross_wave_correlations.R`](03_Descriptives/03d_cross_wave_correlations.R) | LTE/LDI cross-wave correlations and lavaan loadings | S5–S6 |
+| 7 | [`04_Main_Analysis/04_univariate_heritability.R`](04_Main_Analysis/04_univariate_heritability.R) | Univariate ACE + AE + CE; boundary 1-df LRTs for h² and c²; Bonferroni /16; 95 % CIs | Figure 1; S8, S8b–S8e; INTERNAL audit |
+| 8 | [`04_Main_Analysis/04b_bivariate_stress_stress.R`](04_Main_Analysis/04b_bivariate_stress_stress.R) | Bivariate ACE, 10 stress × stress pairs; per-component 1-df LRTs (r_g, r_c, r_e); Bonferroni /75 | Figure 2; S13, S13c, S15 |
+| 9 | [`04_Main_Analysis/04c_bivariate_personality_stress.R`](04_Main_Analysis/04c_bivariate_personality_stress.R) | Bivariate ACE, 15 personality × stress pairs; same LRT structure as 04b | Figure 3; S14, S14c, S16 |
+| 10 | [`04_Main_Analysis/04d_significance_audit.R`](04_Main_Analysis/04d_significance_audit.R) | Bonferroni flags, FDR sensitivity, `audit_summary.txt` from INTERNAL tables | Audit (repo only) |
+| 11 | [`05_Sensitivity/05_sensitivity_int.R`](05_Sensitivity/05_sensitivity_int.R) | Inverse-normal sensitivity (univariate + stress × stress bivariate); sources `fit_ace` / `fit_biv` from 04 + 04b | S10–S10e |
+| 12 | [`05_Sensitivity/05b_perwave_univariate.R`](05_Sensitivity/05b_perwave_univariate.R) | Univariate ACE per LTE/LDI wave | S11 (per-wave) |
+| 13 | [`06_CT_Liability/06_rrr_liability_heritability.R`](06_CT_Liability/06_rrr_liability_heritability.R) | First-degree-relative RRR → Wray–Gottesman liability h² for dichotomous CT | S11–S12 |
+| 14 | [`06_CT_Liability/06b_ct_subscale_heritability.R`](06_CT_Liability/06b_ct_subscale_heritability.R) | Assemble CT subscale heritability table (no Lifelines data) | S12b |
+| 15 | [`07_Figures/07_figures_main.R`](07_Figures/07_figures_main.R) | Main-text Figures 1–3 (embedded summary numbers) | Figures 1–3 |
+| 16 | [`07_Figures/07b_figures_supplementary.R`](07_Figures/07b_figures_supplementary.R) | Supplementary Figures S3–S21 | S3–S21 |
+| — | [`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd) | Narrative walk-through for reviewers | HTML logbook |
 
-**Results:** Univariate ACE models quantified the relative contributions of additive genetic (A), shared household environment (C), and unique environment (E) variance for each phenotype. Bivariate ACE models estimated genetic (r_g), shared-environmental (r_c), unique-environmental (r_e), and phenotypic (r_P) correlations between all stress–stress and personality–stress pairings, with per-component 1-df likelihood-ratio tests and Bonferroni correction (8 × 2 = 16 univariate tests; 25 × 3 = 75 bivariate tests; Ani et al., 2026 protocol).
+**Requirements:** R ≥ 4.3; [ASReml-R 4.2](https://vsni.co.uk/software/asreml-r/) for scripts 7–12; CRAN packages in `01_Config/01_setup.R`. One ASReml licence seat on HPC — no parallel ASReml jobs.
 
-**Conclusions:** Individual-level Lifelines data cannot be shared publicly. This repository provides the analysis code for approved researchers working in the Lifelines secure HPC environment.
-
-## Repository tree
-
-Folders are numbered so they appear in analysis order on GitHub.
-
-```
-lifelines-personality-stress-correlations/
-│
-├── README.md
-├── LICENSE
-├── CITATION.cff
-├── OPEN_SCIENCE_STATEMENT.md
-├── .gitignore
-├── lifelines-personality-stress-correlations.Rproj
-│
-├── 01_Config/
-│   ├── 01_setup.R
-│   └── 01_helpers.R
-│
-├── 02_Data_Preparation/
-│   ├── 02a_score_construction.R
-│   └── 02_data_preparation.R
-│
-├── 03_Descriptives/
-│   ├── 03_descriptives.R
-│   ├── 03b_anova_sex_diff.R
-│   ├── 03c_age_brackets.R
-│   └── 03d_cross_wave_correlations.R
-│
-├── 04_Main_Analysis/
-│   ├── 04_univariate_heritability.R
-│   ├── 04b_bivariate_stress_stress.R
-│   ├── 04c_bivariate_personality_stress.R
-│   └── 04d_significance_audit.R
-│
-├── 05_Sensitivity/
-│   ├── 05_sensitivity_int.R
-│   └── 05b_perwave_univariate.R
-│
-├── 06_CT_Liability/
-│   ├── 06_rrr_liability_heritability.R
-│   └── 06b_ct_subscale_heritability.R
-│
-├── 07_Figures/
-│   ├── 07_figures_main.R
-│   └── 07b_figures_supplementary.R
-│
-├── docs/
-│   └── Lifelines_Logbook.Rmd
-│
-├── data/
-│   └── README.md          ← expected Lifelines files (not in repo)
-│
-└── output/                ← tables + figures (gitignored, created when you run scripts)
-    ├── tables/
-    └── figures/
-```
-
-Each numbered folder contains a short `README.md` listing its scripts.
-
-## How to run (script by script)
-
-**Requirements:** R ≥ 4.3; [ASReml-R 4.2](https://vsni.co.uk/software/asreml-r/) for scripts in folders 04–05; CRAN packages listed in `01_Config/01_setup.R`.
-
-Open the repository root in RStudio (`lifelines-personality-stress-correlations.Rproj`) or run `setwd()` to the folder that contains this `README.md`.
-
-### Step 0 — setup (always first)
+### How to run
 
 ```r
 setwd("/path/to/lifelines-personality-stress-correlations")
 source("01_Config/01_setup.R")
-```
 
-### Step 1 — data preparation
-
-```r
 source("02_Data_Preparation/02a_score_construction.R")
 source("02_Data_Preparation/02_data_preparation.R")
+# … continue in table order (rows 3–16)
 ```
 
-### Step 2 — descriptives
+Script **11** (`05_sensitivity_int.R`) needs `fit_ace()` and `fit_biv()` from scripts **7** and **8** in the same R session. Open [`lifelines-personality-stress-correlations.Rproj`](lifelines-personality-stress-correlations.Rproj) in RStudio to set the working directory.
 
-```r
-source("03_Descriptives/03_descriptives.R")
-source("03_Descriptives/03b_anova_sex_diff.R")
-source("03_Descriptives/03c_age_brackets.R")
-source("03_Descriptives/03d_cross_wave_correlations.R")
-```
+Generated tables and figures go to `output/tables/` and `output/figures/` (gitignored).
 
-### Step 3 — main analysis (ASReml-R)
-
-```r
-source("04_Main_Analysis/04_univariate_heritability.R")
-source("04_Main_Analysis/04b_bivariate_stress_stress.R")
-source("04_Main_Analysis/04c_bivariate_personality_stress.R")
-source("04_Main_Analysis/04d_significance_audit.R")
-```
-
-### Step 4 — sensitivity
-
-```r
-source("04_Main_Analysis/04_univariate_heritability.R")   # defines fit_ace()
-source("04_Main_Analysis/04b_bivariate_stress_stress.R")  # defines fit_biv()
-source("05_Sensitivity/05_sensitivity_int.R")
-source("05_Sensitivity/05b_perwave_univariate.R")
-```
-
-### Step 5 — CT liability (supplementary)
-
-```r
-source("06_CT_Liability/06_rrr_liability_heritability.R")
-source("06_CT_Liability/06b_ct_subscale_heritability.R")
-```
-
-### Step 6 — figures
-
-```r
-source("07_Figures/07_figures_main.R")
-source("07_Figures/07b_figures_supplementary.R")
-```
-
-**HPC note:** one ASReml licence seat — do not run parallel ASReml jobs.
-
-## Upload to GitHub
-
-Create a **new private** repository named **`lifelines-personality-stress-correlations`**, then upload from:
-
-`C:\Users\ReicheltF\OneDrive - UMCG\1_lifelines_new\scripts\github_short_2026-07-15`
-
-### Option A — upload via browser (simplest)
-
-1. On GitHub: **New repository** → name `lifelines-personality-stress-correlations` → Private → **Create repository** (no README — you have one locally).
-2. Click **Add file** → **Upload files**.
-3. Drag the **entire contents** of `github_short_2026-07-15`:
-   - Root: `README.md`, `LICENSE`, `CITATION.cff`, `.gitignore`, `lifelines-personality-stress-correlations.Rproj`, …
-   - Folders: `01_Config` … `07_Figures`, `docs`, `data`
-4. Commit message: `Initial upload — numbered analysis folders`
-5. Refresh — you should see folders `01_Config` … `07_Figures`, not loose `.R` files at the root.
-
-**Do not upload:** `.Rdata`, `.csv`, or `output/`; only `data/README.md` in `data/`.
-
-### Option B — git from your PC
-
-```powershell
-cd "C:\Users\ReicheltF\OneDrive - UMCG\1_lifelines_new\scripts\github_short_2026-07-15"
-git init
-git add .
-git commit -m "Reorganise into numbered analysis folders"
-git branch -M main
-git remote add origin https://github.com/FelixReichelt13/lifelines-personality-stress-correlations.git
-git push -u origin main --force
-```
-
-Use `--force` only if you are replacing the first upload entirely and no one else has cloned the repo.
-
-### After upload — quick check
-
-- [ ] Root shows `README.md` + folders `01_Config` … `07_Figures`, not 20 loose `.R` files
-- [ ] `data/` contains only `README.md`
-- [ ] No `.Rdata` or `.csv` files visible in the repo
+---
 
 ## ACE models with ASReml-R
 
-### Univariate (script 04)
+### Univariate (script 07)
 
 ```
 y = mu + b1*sex + b2*age + b3*age^2 + a + c + e
 ```
 
-with `a ~ N(0, A * sigma_a^2)` (additive genetic), `c ~ N(0, I * sigma_c^2)` (shared household) and `e ~ N(0, I * sigma_e^2)`. Heritability, shared environment and unique environment:
+with `a ~ N(0, A * sigma_a^2)` (additive genetic), `c ~ N(0, I * sigma_c^2)` (shared household, one level per residential HouseID) and `e ~ N(0, I * sigma_e^2)`. *A* is the additive relationship matrix from the three-generation Lifelines pedigree via `asreml::ainverse()`. Heritability, shared environment and unique environment are extracted with `vpredict()` (ASReml-R Reference Manual 4.2, §4.6):
 
 ```r
 heritability <- vpredict(model, h2 ~ V2 / (V1 + V2 + V3))
@@ -198,19 +65,33 @@ shared_env   <- vpredict(model, c2 ~ V1 / (V1 + V2 + V3))
 unique_env   <- vpredict(model, e2 ~ V3 / (V1 + V2 + V3))
 ```
 
-### Model comparison (scripts 04 and 05)
+### Model comparison (scripts 07 and 11)
 
-| Model | Random terms | Tests via LRT |
-|-------|--------------|---------------|
-| ACE | `vm(ID, Ainv) + idv(HouseID1)` | reference |
-| AE | `vm(ID, Ainv)` | ACE vs AE → c² = 0 |
-| CE | `idv(HouseID1)` | ACE vs CE → h² = 0 |
+Scripts 07 and 11 fit **three nested submodels** per phenotype (ACE, AE, CE) for a full decomposition table with boundary-corrected LRTs and information criteria:
 
-Bonferroni: 8 phenotypes × 2 tests = **16** (α = .05/16).
+| Model | Random terms | Tests via LRT | df (boundary) |
+|-------|--------------|---------------|---------------|
+| ACE | `vm(ID, Ainv) + idv(HouseID1)` | (reference model) | – |
+| AE | `vm(ID, Ainv)` | ACE vs AE → c² = 0 | 1 (0.5·χ²₀ + 0.5·χ²₁) |
+| CE | `idv(HouseID1)` | ACE vs CE → h² = 0 | 1 (0.5·χ²₀ + 0.5·χ²₁) |
 
-### Bivariate (scripts 04b, 04c, 05)
+e² is not tested univariately (always present / on the boundary). Bonferroni correction spans 8 phenotypes × 2 tests = **16** (α = .05/16 = .003125).
 
-Each pair: `rp` (estimate + SE + CI, no LRT); `rg`, `rc`, `re` each with a separate 1-df LRT. Bonferroni: 25 pairings × 3 = **75** tests (α = .05/75).
+Each fit contributes to Suppl. Tables **S8b** (LRTs) and **S8c** (logLik / AIC / BIC). Raw ASReml `varcomp` and fixed effects go to **S8d** / **S8e**.
+
+### Bivariate (scripts 08, 09, 11)
+
+Two-trait REML uses wide `cbind(P1, P2)` with `random = ~ us(trait):vm(ID, Ainv) + us(trait):HouseID1` and `rcov = ~ us(trait):units`. ASReml orders variance components alphabetically by random-term name — always confirm V-indexing with:
+
+```r
+cbind(summary(model)$varcomp, n = seq_along(model$vparameters))
+```
+
+Each pair yields `rp` (estimate + SE + 95 % CI; **no LRT**), plus `rg`, `rc`, and `re` each tested with a **separate 1-df LRT** (full model vs sub-model with that cross-trait covariance fixed to zero). Bonferroni correction: 25 pairings × 3 correlations = **75** tests (α = .05/75 ≈ .000667).
+
+Manuscript tables **S13/S14** report estimates and LRT *p* values; **S13c/S14c** show model comparisons; **S15/S16** show A/C/E decomposition. `*_INTERNAL.tsv` files (Wald *p*, Bonferroni flags) stay in the repository for audit only — see script **10** (`04d_significance_audit.R`).
+
+---
 
 ## Software
 
@@ -220,15 +101,24 @@ Each pair: `rp` (estimate + SE + CI, no LRT); `rg`, `rc`, `re` each with a separ
 | Latent factors for LTE / LDI | `lavaan` |
 | RRR / liability *h²* | `marginaleffects`, `sandwich` |
 | Data handling | `data.table`, `dplyr`, `tidyr` |
+| Inverse normal transformation | base R (`qnorm`, `rank`) |
 | Figures | `ggplot2`, `patchwork`, `scales` |
+
+`asreml-R` is required for scripts 7–12; obtain an academic licence from [vsni.co.uk/software/asreml-r](https://vsni.co.uk/software/asreml-r/).
+
+---
 
 ## Data availability
 
-Individual-level Lifelines data cannot be shared because of participant consent. Bona-fide researchers can apply via the [Lifelines Research Office](https://www.lifelines.nl/researcher). See [`data/README.md`](data/README.md) for the file list expected on the HPC.
+Individual-level Lifelines data cannot be shared because of the participant consent. Bona-fide researchers can apply for access to the same extraction via the Lifelines Research Office (<https://www.lifelines.nl/researcher>); the analytic dataset can then be opened inside the Lifelines secure HPC environment using the scripts in this repository. See [`data/README.md`](data/README.md) for the list of files the scripts expect.
+
+---
 
 ## Open Science
 
-See [OPEN_SCIENCE_STATEMENT.md](OPEN_SCIENCE_STATEMENT.md). Zenodo DOI will be added in `CITATION.cff` at acceptance.
+EJP Open Materials compliance: [OPEN_SCIENCE_STATEMENT.md](OPEN_SCIENCE_STATEMENT.md). Repository archived on Zenodo (DOI in `CITATION.cff`) at acceptance.
+
+---
 
 ## Citation
 
@@ -236,4 +126,6 @@ See [OPEN_SCIENCE_STATEMENT.md](OPEN_SCIENCE_STATEMENT.md). Zenodo DOI will be a
 
 > Reichelt, F. (2026). *lifelines-personality-stress-correlations*. GitHub: https://github.com/FelixReichelt13/lifelines-personality-stress-correlations
 
-**Contact:** Felix Reichelt — f.reichelt@umcg.nl
+See [CITATION.cff](CITATION.cff) for machine-readable metadata.
+
+**Contact:** Felix Reichelt — University Medical Center Groningen — f.reichelt@umcg.nl
