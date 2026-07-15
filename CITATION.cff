@@ -1,0 +1,113 @@
+# Citation File Format -- https://citation-file-format.github.io/
+#
+# This file records how to cite the analysis pipeline that
+# accompanies the manuscript below. At acceptance, the
+# `doi` field will be filled with the Zenodo DOI minted by
+# tagging the release commit (v1.0).
+
+cff-version: 1.2.0
+message: >-
+  If you use this analysis pipeline, please cite both the
+  manuscript and the archived software release.
+
+title: >-
+  Analysis pipeline for: Familial Correlation between Personality
+  and Stress Exposure -- Insights from the Multigenerational
+  Lifelines Cohort Study
+
+abstract: >-
+  R and ASReml-R code, R Markdown logbook and Open Science
+  documentation reproducing every figure and supplementary table of
+  the accompanying manuscript. The repository covers item-level
+  scoring, pedigree-based univariate and bivariate variance
+  decomposition, an inverse-normal sensitivity analysis,
+  liability-scale heritability of dichotomised childhood trauma and
+  the full set of supplementary figures and tables.
+
+type: software
+version: "1.0.0-pre"
+date-released: 2026-06-29
+license: MIT
+url: "https://github.com/FelixReichelt13/lifelines-personality-stress-correlations"
+# doi: 10.5281/zenodo.XXXXXXX   # to be added at acceptance
+keywords:
+  - personality
+  - stress exposure
+  - heritability
+  - extended pedigree
+  - Lifelines
+  - ASReml-R
+  - variance decomposition
+  - gene-environment correlation
+
+authors:
+  - family-names: Reichelt
+    given-names: Felix
+    affiliation: >-
+      Department of Psychiatry, University Medical Center
+      Groningen, University of Groningen, The Netherlands
+    email: f.reichelt@umcg.nl
+    # orcid: "https://orcid.org/0000-0000-0000-0000"   # add yours
+
+contact:
+  - family-names: Reichelt
+    given-names: Felix
+    email: f.reichelt@umcg.nl
+
+# Companion publication that the pipeline reproduces.
+preferred-citation:
+  type: article
+  title: >-
+    Familial Correlation between Personality and Stress Exposure:
+    Insights from the Multigenerational Lifelines Cohort Study
+  journal: European Journal of Personality
+  year: 2026
+  authors:
+    - family-names: Reichelt
+      given-names: Felix
+  # doi: 10.xxxx/xxxx   # to be added at acceptance
+
+# Key software and reference cohort.
+references:
+  - type: software
+    title: ASReml-R
+    version: "4.2"
+    authors:
+      - family-names: Butler
+        given-names: D. G.
+      - family-names: Cullis
+        given-names: B. R.
+      - family-names: Gilmour
+        given-names: A. R.
+      - family-names: Gogel
+        given-names: B. J.
+      - family-names: Thompson
+        given-names: R.
+    publisher:
+      name: VSN International Ltd.
+    year: 2023
+    url: "https://vsni.co.uk/software/asreml-r"
+  - type: article
+    title: >-
+      Cohort Profile Update: Lifelines, a three-generation cohort
+      study and biobank
+    authors:
+      - family-names: Sijtsma
+        given-names: Anna
+      - family-names: Rienks
+        given-names: J.
+      - family-names: van der Harst
+        given-names: P.
+      - family-names: Navis
+        given-names: G.
+      - family-names: Rosmalen
+        given-names: J. G. M.
+      - family-names: Dotinga
+        given-names: A.
+    journal: International Journal of Epidemiology
+    volume: 51
+    issue: 5
+    start: e295
+    end: e302
+    year: 2022
+    doi: 10.1093/ije/dyab257

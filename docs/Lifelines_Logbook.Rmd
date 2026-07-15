@@ -1,0 +1,276 @@
+---
+title: "Heritability of stress exposures and personality in Lifelines — analysis logbook"
+author: "Felix Reichelt"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+    code_folding: show
+    number_sections: true
+    theme: readable
+    df_print: kable
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE)
+```
+
+# Project background
+
+This logbook narrates the analysis pipeline that supports the manuscript
+*"Familial Correlation between Personality and Stress Exposure: Insights
+from the Multigenerational Lifelines Cohort Study."* It is meant to be read
+alongside the R scripts in this repository; every claim in the manuscript
+can be traced to a code chunk here or to one of the numbered scripts.
+
+The substantive question is: **how much of the variance in adult stress
+exposure (childhood trauma, recent threatening events, ongoing
+difficulties, loneliness, lack of social support) is shared across family
+members, and how much of that familial covariance overlaps with the
+familial component of three personality traits (Neuroticism, Extraversion,
+Conscientiousness)?**
+
+The answer comes from a multigenerational pedigree-based variance
+decomposition (the classical ACE model) fitted in `ASReml-R`, with bivariate
+extensions for every stress × stress and personality × stress pair.
+
+# Phenotypes
+
+Stress exposure (5 phenotypes, all from Lifelines questionnaires):
+
+1. **Childhood trauma** — CTQ-SF (Bernstein et al., 1998; 25 clinical items,
+   wave 2B). Sum score 25 – 125; dichotomised at the moderate Bernstein
+   cut-off (≥ 40) for the liability-threshold heritability in script 04bc.
+2. **List of Threatening Experiences (LTE)** — Brugha & Cragg (1990);
+   12 binary events at four waves (1A, 1B, 1C, 2A). Combined across waves
+   via a one-factor `lavaan` SEM with FIML.
+3. **Long-term Difficulties Inventory (LDI)** — Rosmalen et al. (2012);
+   9 domain items at the same four waves; same lavaan factor procedure.
+4. **Loneliness** — De Jong Gierveld 6-item short form (wave 2B).
+5. **Lack of social support** — SPF-IL Social Production Function
+   Instrument for Level of Well-Being (Nieboer et al., 2005); 9 social-
+   well-being items (wave 2B). The raw score is reversed so that "higher
+   value = more stress".
+
+Personality (3 traits from the Lifelines NEO release):
+
+6. **Neuroticism** — NEO-PI-R 48-item six-facet domain sum (anxiety, anger-
+   hostility, depression, self-consciousness, impulsiveness, vulnerability;
+   6 × 8 items; range 48 – 240).
+7. **Extraversion** — NEO-FFI domain SUM3 (11 items administered; one FFI
+   item was omitted by Lifelines, so the Lifelines `SUM3` rule
+   `round((SUM2 / NVALID) × 12)` rescales the score to a 12-item-equivalent
+   12 – 60 analytic scale).
+8. **Conscientiousness** — NEO-FFI domain SUM3 (12 items; 12 – 60).
+
+All three personality variables are z-standardised before variance
+decomposition (scripts 03, 05) so the raw-scale asymmetry across traits
+does not affect estimates.
+
+# The ACE model with `ASReml-R`
+
+## Univariate (script 04)
+
+For each phenotype *y* we fit a pedigree-based REML linear mixed model
+
+$$y = \mu + \beta_1 \text{sex} + \beta_2 \text{age} + \beta_3 \text{age}^2 + a + c + e,$$
+
+with `a ~ N(0, A * sigma_a^2)`, `c ~ N(0, I * sigma_c^2)` and
+`e ~ N(0, I * sigma_e^2)`. *A* is the additive numerator relationship
+matrix from the three-generation Lifelines pedigree, obtained via
+`asreml::ainverse()`. One household level per residential `HouseID` provides
+the shared-environment component.
+
+```{r univariate-asreml, eval = FALSE}
+library(asreml)
+
+model <- asreml(
+  fixed   = phenotype ~ sex + age + I(age^2),
+  random  = ~ vm(PSEUDOIDEXT, Ainv) + HouseID,
+  data    = baseline,
+  na.action = na.method(x = "omit")
+)
+
+heritability <- vpredict(model, h2 ~ V2 / (V1 + V2 + V3))   # additive genetic
+shared_env   <- vpredict(model, c2 ~ V1 / (V1 + V2 + V3))   # household
+unique_env   <- vpredict(model, e2 ~ V3 / (V1 + V2 + V3))   # residual
+```
+
+`vpredict()` refers to variance parameters by their position in the
+`vparameters` slot of the asreml object (`V1`, `V2`, …). The order is
+**alphabetical by random-term name**, not the order written in the random
+formula.
+
+| Position | Variance component         | Interpretation |
+|----------|----------------------------|---------------------------|
+| `V1`     | `HouseID!HouseID.var`      | Shared household (*c²*) |
+| `V2`     | `vm(PSEUDOIDEXT, Ainv)!ped`| Additive genetic (*h²*) |
+| `V3`     | `units!R`                  | Residual / unique env (*e²*) |
+
+Likelihood-ratio tests use `boundary = TRUE` to handle a variance fixed at
+zero (50 : 50 mixture of $\chi^2_0$ and $\chi^2_1$).
+
+## Bivariate (scripts 04, 05)
+
+The two-trait extension stacks the two phenotypes in long format and gives
+the additive genetic, shared-household and residual covariance an
+unstructured 2 × 2 form (`us(trait)`). The four correlations of interest:
+
+```{r bivariate-asreml, eval = FALSE}
+rg <- vpredict(model, rg ~ V5 / sqrt(V4 * V6))                              # genetic
+rc <- vpredict(model, rc ~ V2 / sqrt(V1 * V3))                              # shared env
+re <- vpredict(model, re ~ V9 / sqrt(V8 * V10))                             # unique env
+rp <- vpredict(model, rp ~ (V2 + V5 + V9) /
+                          sqrt((V1 + V4 + V8) * (V3 + V6 + V10)))           # phenotypic
+```
+
+**Always** confirm the V-indexing before trusting a `vpredict()` call:
+
+```{r vparam-check, eval = FALSE}
+cbind(summary(model)$varcomp, n = seq_along(model$vparameters))
+```
+
+A forgotten `idv()` or an extra constraint silently shifts every subsequent
+index and the correlation formula then estimates the wrong quantity.
+
+# Item-level scoring (script `02a_score_construction.R`)
+
+All stress measures use **mean-imputation when fewer than half of the
+items in a subscale are missing**, except LTE and LDI, where items code
+discrete events for which imputation is not theoretically defensible
+(complete-case scoring per wave). The CTQ-SF reverse-coded items
+(q2, q5, q7, q13, q19, q26, q28) are recoded `5↔1, 4↔2` before scoring.
+SPF-IL is sign-flipped so that higher values mean more stress.
+
+Personality scoring follows the canonical Lifelines / UGLI rule
+`SUM3 = round((SUM2 / NVALID) × k)` with *k* = 8 for NEO-PI-R facet sums
+and *k* = 12 for NEO-FFI domain sums. For Extraversion this single formula
+serves two purposes at once: the systematically missing 12th NEO-FFI item
+is imputed to the participant's mean of the 11 administered items, and any
+further item-level missingness is mean-imputed by the same rule.
+
+Cronbach's α for every multi-item stress scale is computed in
+`02a_score_construction.R` Step 6 and written to
+`output/tables/table_S7e_internal_consistency.tsv` (Suppl. Table S7e).
+For the NEO scales we report published Dutch NEO-manual reliabilities
+(Hoekstra, Ormel & de Fruyt, 2007) because Lifelines releases only the
+SUM* totals and not the items: Neuroticism α ≈ 0.92 (48-item NEO-PI-R
+domain); Extraversion α ≈ 0.79 (12-item NEO-FFI domain, a ceiling for the
+11-item version administered); Conscientiousness α ≈ 0.81 (12-item NEO-FFI
+domain).
+
+# Cross-wave latent factors for LTE and LDI (script `02_data_preparation.R`)
+
+LTE and LDI are administered at four assessment waves (1A, 1B, 1C, 2A).
+Each pair of consecutive waves correlates around 0.4 – 0.6 (Suppl. Table
+S5). Rather than analysing each wave separately, we fit a one-factor
+congeneric CFA across waves with FIML missing-data handling in `lavaan`:
+
+```{r lavaan-cfa, eval = FALSE}
+library(lavaan)
+model <- "F =~ LTE_1A + LTE_1B + LTE_1C + LTE_2A"
+fit   <- sem(model, data = baseline, missing = "fiml", estimator = "ML")
+baseline$LTE_latent <- as.numeric(predict(fit))
+```
+
+Factor scores are then standardised to SD = 1 in script 04 so the variance
+components are interpretable on a unit-variance scale. Per-wave ACE
+estimates (Suppl. Table S9, script `05b_perwave_univariate.R`) confirm
+that any single wave has lower *h²* than the latent factor — exactly the
+expected attenuation due to wave-specific measurement error, and the
+practical justification for the latent-factor step.
+
+# Inverse-normal-transformation sensitivity (script `05_sensitivity_int.R`)
+
+ASReml assumes (multivariate) normality of the residuals. Childhood
+trauma, LTE, LDI and Loneliness are right-skewed, with some discrete
+spikes around mean-imputed integer values. We refit every univariate and
+bivariate model with the rank-based inverse-normal transform
+
+$$y_{\text{INT}} = \Phi^{-1}\!\bigl((\text{rank}(y) - 0.5) / n\bigr)$$
+
+and report the comparison in Suppl. Table S10 and Suppl. Figs S19 – S20.
+The qualitative pattern is unchanged.
+
+# Liability-scale heritability for dichotomous childhood trauma (script `06_rrr_liability_heritability.R`)
+
+For the dichotomous CT phenotype we additionally compute the
+liability-scale heritability from the first-degree-relative recurrence
+risk ratio (RRR), following the Wray & Gottesman (2012) liability-threshold
+framework. The pipeline:
+
+1. Estimate prevalence *K* in the unrelated sample.
+2. For every proband-relative pair, compute the relative-conditional
+   prevalence *λ*; the RRR is $\lambda / K$.
+3. Map RRR back to a liability-scale *h²* using the bivariate-normal
+   threshold model (Wray & Gottesman, 2012, Eq. 1; Bos et al., 2025).
+4. Standard errors are clustered at the family level using the
+   `sandwich` package (cluster-robust score CIs).
+
+Subscale heritability (Suppl. Table S12b, script
+`06b_ct_subscale_heritability.R`) is reported at both the moderate
+Bernstein cut-off (`≥ 40`) and a low cut-off (`≥ 30`) so the reader can
+judge the cut-off sensitivity.
+
+# Multiple-testing policy
+
+Two separate Bonferroni families are applied for the primary analyses:
+
+| Family | Tests | α (Bonferroni) |
+|--------|------:|---------------:|
+| Univariate ACE (LRT for *h²* = 0) | 8 | .05 / 8 = .00625 |
+| Bivariate ACE (per-pairing FWER) | 25 | .05 / 25 = .002  |
+
+The bivariate correction is at the *pairing* level rather than the
+*correlation* level (75 tests) because rg, rc and re from a single pairing
+decompose the same rP from the same fit and share the same *N* (Visscher
+et al., 2014; Yengo et al., 2018). Sensitivity and exploratory analyses
+(INT, per-wave, CT-liability, CT-subscale, age-bracket) are not corrected
+and are reported descriptively.
+
+The `*_p` columns in Suppl. Tables S13 + S14 are two-sided normal-
+approximation Wald p-values (`2 * pnorm(-|est / se|)`). Wald and LRT
+p-values agree to ≥ 3 decimals away from variance-component boundaries
+(rg ≈ ±1, c² ≈ 0).
+
+# Interpretation: what bivariate correlations can and cannot show
+
+The bivariate ACE decomposes the phenotypic correlation
+$r_\text{P}$ between two traits into three additive parts:
+
+$$r_\text{P} = r_g\sqrt{h^2_X h^2_Y} + r_c\sqrt{c^2_X c^2_Y} + r_e\sqrt{e^2_X e^2_Y}.$$
+
+A non-zero *rg* tells us that the *familial* component of *X* overlaps with
+the *familial* component of *Y*. It does **not** identify the substantive
+mechanism: a shared additive-genetic component, vertical cultural
+transmission, assortative mating, and shared-household assortment all
+load onto *rg* in a pedigree-based design without genotyped variants.
+The same caveat applies to *rc* (any factor that clusters by household,
+including parental SES or proximate environment, contributes here) and
+*re* (within-person correlation of residual error). The manuscript
+Discussion §4 spells out the interpretive boundary; we list the
+candidate mechanisms but do not claim to distinguish among them.
+
+# References (key citations)
+
+- Bernstein, D. P. et al. (1998, 2003). Childhood Trauma Questionnaire.
+- Bos, F. M. et al. (2025). Familial coaggregation of functional and
+  internalising disorders in Lifelines. *Psychological Medicine* 55.
+- Brugha, T. S. & Cragg, D. (1990). The List of Threatening Experiences.
+- Butler, D. G. et al. (2023). *ASReml-R Reference Manual* (Version 4.2).
+- Costa, P. T. & McCrae, R. R. (1992). NEO-PI-R Professional Manual.
+- de Jong Gierveld, J. & van Tilburg, T. (2006). De Jong Gierveld 6-item.
+- Elsman, E. B. M. et al. (2022). SPF-IL psychometrics.
+- Hoekstra, H. A., Ormel, J. & de Fruyt, F. (2007). Dutch NEO-PI-R / FFI manual.
+- Klijs, B. et al. (2015). Lifelines design and rationale.
+- Nieboer, A. P. et al. (2005). SPF-IL Social Production Function.
+- Rosmalen, J. G. M. et al. (2012). LDI / LTE in Lifelines.
+- Sijtsma, A. et al. (2022). Lifelines cohort overview update.
+- Thombs, B. D. et al. (2009). CTQ-SF psychometric properties.
+- Triatin, R. D. et al. (2023). Lifelines ACE methodology.
+- Visscher, P. M. et al. (2014). Heritability of complex traits.
+- Wray, N. R. & Gottesman, I. I. (2012). Liability-threshold heritability.
+- Yengo, L. et al. (2018). Genetic-correlation grids.
