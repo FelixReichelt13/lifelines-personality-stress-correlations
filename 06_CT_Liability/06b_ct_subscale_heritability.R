@@ -110,8 +110,7 @@ ct_subscales <- data.frame(
   h2_liab_mod_hi     = c(0.658, 0.792,  0.372, 0.879, 0.549, 0.811),
   n_above_low        = c(34972, 10872, 27620, 3922, 8752, 9035),
   h2_liability_low   = c(0.258, 0.295, 0.313, 0.203, 0.246, 0.286),
-  stringsAsFactors   = FALSE
-)
+  stringsAsFactors   = FALSE)
 
 
 ## Step 2 -- Write the supplementary table ------------------------------------
