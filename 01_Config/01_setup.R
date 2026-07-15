@@ -119,9 +119,7 @@ PERSONALITY_PHENOTYPES <- c("Neuroticism", "Extraversion", "Conscientiousness")
 ## 2003) used for dichotomous CT in script 02 and liability h² in script 04bc.
 ## Primary ACE models (03–05) use the continuous CTQ-SF total (`Childhoodtrauma`).
 CTQ_SUBSCALE_COLS <- c("ea_sum", "pa_sum", "sa_sum", "en_sum", "pn_sum")
-CTQ_MODERATE_THRESHOLDS <- c(
-  ea_sum = 12, pa_sum = 9, sa_sum = 7, en_sum = 14, pn_sum = 9
-)
+CTQ_MODERATE_THRESHOLDS <- c(ea_sum = 12, pa_sum = 9, sa_sum = 7, en_sum = 14, pn_sum = 9)
 
 
 ## 6. Plotting palette ---------------------------------------------------
