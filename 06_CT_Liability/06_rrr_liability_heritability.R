@@ -43,9 +43,8 @@
 #### Outputs   : output/tables/table_S11_ct_dichotomization_prevalence.tsv
 ####             output/tables/table_S12_ct_rrr_liability_h2.tsv
 ####
-#### Manuscript: Methods 2.4 ("Sensitivity analyses"); Suppl. Table S11
-####             (prevalence by sex), Suppl. Table S12 (RRR + liability
-####             h^2). The reported manuscript values are
+#### Related outputs: Table S11 (prevalence by sex), Table S12
+####             (RRR + liability h^2). Production-run reference values:
 ####             K = 14.2 %, K_male = 11.1 %, K_female = 16.3 %,
 ####             RRR = 1.84 (95 % CI 1.68-2.00), h^2_liab = 57.2 %
 ####             (95 % CI 48.7-65.8 %).
@@ -117,7 +116,7 @@ d <- baseline[!is.na(CT_dichotomous) & !is.na(get(fdr_col))]      # analytic sam
 ## Step 2 — Prevalences in the population and in FDRs of cases --------
 ##
 ## We also compute K separately for males and females (Suppl. Table
-## S11). The manuscript reports K_male = 11.1 % and K_female = 16.3 %.
+## S11). Production-run reference: K_male = 11.1 %, K_female = 16.3 %.
 
 K       <- mean(d$CT_dichotomous)
 N       <- nrow(d)

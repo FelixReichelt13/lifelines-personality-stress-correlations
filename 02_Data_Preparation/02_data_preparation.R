@@ -15,7 +15,7 @@
 ####
 #### CT coding  : Childhood trauma is present when at least one CTQ-SF subscale
 ####              meets the literature-based moderate/severe threshold used in
-####              the manuscript and Bernstein et al. (2003): emotional abuse
+####              this project and Bernstein et al. (2003): emotional abuse
 ####              >= 12, physical abuse >= 9, sexual abuse >= 7, emotional
 ####              neglect >= 14 or physical neglect >= 9. A participant is
 ####              coded 0 only when all five subscales are observed and none
@@ -173,8 +173,8 @@ baseline_int <- baseline_int[AGE >= 18]
 ## Step 6 — Latent factors for LTE and LDI ------------------------------
 ##
 ## Both questionnaires were administered at multiple waves. The
-## manuscript uses a single congeneric factor across waves (Suppl.
-## Figure S1). When fewer than two waves are present in the file we
+## Primary analysis uses a single congeneric factor across waves
+## (Figure S1). When fewer than two waves are present in the file we
 ## fall back to the single available wave, otherwise we fit the SEM
 ## with FIML so that we keep participants with partial response.
 

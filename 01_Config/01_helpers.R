@@ -25,7 +25,7 @@
 ## Rank-based inverse normal transformation. Used in script 04bc
 ## as a sensitivity analysis: ASReml ACE models assume residual normality,
 ## and several of the stress phenotypes are noticeably right-skewed (see
-## Suppl. Fig. S18). The INT mapping used in the manuscript is
+## Suppl. Fig. S18). The INT mapping used in this pipeline is
 ##
 ##     y_i  ->  qnorm( (rank(y_i) - 0.5) / N )
 ##

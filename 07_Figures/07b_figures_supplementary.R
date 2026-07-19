@@ -14,16 +14,15 @@
 #### the script. No Lifelines data file is needed to reproduce the
 #### figures.
 ####
-#### Figure mapping (matches the manuscript supplement)
-#### ---------------------------------------------------
+#### Figure mapping
+#### --------------
 ####   figure_S3_to_S16_age_bracket_means
 ####     Mean +/- SD of every phenotype across seven adult age brackets
-####     (18-25, 26-35, ..., 70+). One panel per phenotype; the
-####     manuscript splits the eight panels into individual figures
-####     S3-S16 (14 figures total once CTQ-SF subscales are included).
-####     Here we render them as one composite figure -- splitting it
-####     into 14 files is purely a copy of the per-panel objects in
-####     `age_panels`, available as a side product.
+####     (18-25, 26-35, ..., 70+). One panel per phenotype; figures
+####     S3-S16 are one figure per panel (14 figures total once CTQ-SF
+####     subscales are included). Here we render them as one composite
+####     -- splitting into 14 files is a copy of the per-panel objects
+####     in `age_panels`, available as a side product.
 ####
 ####   figure_S17_distributions_normal
 ####     Histogram of phenotypes whose raw distribution approximates
@@ -52,7 +51,7 @@
 ####
 #### Outputs   : output/figures/figure_S*.{png,pdf}
 ####
-#### Manuscript: Supplementary Figures S3-S16, S17, S18, S19, S20, S21.
+#### Related outputs: Supplementary Figures S3-S16, S17, S18, S19, S20, S21.
 #### Version history:
 #### 2026-07-15  v1.1  Ani-aligned multiple testing (/16 uni, /75 bivar);
 ####                   per-component 1-df bivariate LRTs; INTERNAL tables
@@ -82,7 +81,7 @@ library(grid)         # `unit()` etc., used by the patchwork composite layout
 ##     the count of observations falling in each bin and the SD-based
 ##     bin width used to compute it. Numbers come from the final
 ##     analytic data set (N = 152,722 total cohort / N = 141,751
-##     adults; see Methods 2.1 of the manuscript).
+##     adults).
 
 histogram_data <- list(
   Childhoodtrauma = data.frame(
@@ -229,11 +228,10 @@ univariate_int <- data.frame(
 ## 1. Figure S3-S16 -- mean +/- SD across age brackets
 ## -----------------------------------------------------------------------
 ##
-## The manuscript supplement renders one figure per phenotype (S3-S16,
-## with the CTQ-SF subscales adding extra panels). Here we keep the
-## composite layout to render a single PDF; the per-phenotype panels
-## are available as `age_panels[[i]]` for export to individual files
-## if the supplement asks for one figure per panel.
+## Figures S3-S16 are one figure per phenotype (CTQ-SF subscales add
+## extra panels). Here we keep the composite layout as a single PDF;
+## per-phenotype panels are available as `age_panels[[i]]` for export
+## to individual files when needed.
 
 age_panel <- function(df, title, colour) {
   df$upper <- df$mean + df$sd
@@ -281,9 +279,8 @@ save_figure(fig_S3_S16, "figure_S3_to_S16_age_bracket_means",
 ## 2. Figure S17 -- distributions approximating normality
 ## -----------------------------------------------------------------------
 ##
-## Manuscript Results 3.1: "The personality traits and social support
-## exhibited distributions approximating normality (Supplementary
-## Figure S17)."
+## Personality traits and social support: approximately normal raw
+## distributions (Figure S17).
 
 hist_long <- function(phenos) {
   do.call(rbind, lapply(phenos, function(nm) {
@@ -310,9 +307,8 @@ save_figure(fig_S17, "figure_S17_distributions_normal",
 ## 3. Figure S18 -- skewed distributions
 ## -----------------------------------------------------------------------
 ##
-## Manuscript Results 3.1: "Loneliness, childhood trauma, and each
-## single-wave measure of stressful life events and life difficulties
-## showed strongly skewed distributions (Supplementary Figure S18)."
+## Loneliness, childhood trauma, and single-wave LTE/LDI: strongly
+## skewed raw distributions (Figure S18).
 
 fig_S18 <- ggplot(hist_long(skewed_phenos), aes(value)) +
   geom_histogram(bins = 25, fill = COR_COLOURS[["rp"]], colour = "white") +
@@ -418,12 +414,11 @@ save_figure(fig_S20, "figure_S20_raw_vs_int_ace", width = 10, height = 8)
 ## 6. Figure S21 -- CT dichotomization cut-offs
 ## -----------------------------------------------------------------------
 ##
-## Manuscript Results 3.2: "childhood trauma was dichotomized using
-## literature-based cutoffs (Supplementary Figure S21)." Bernstein
-## et al. (1998) suggested moderate cut-offs at >=10 (emotional abuse),
-## >=10 (physical abuse), >=8 (sexual abuse), >=15 (emotional neglect),
-## and >=10 (physical neglect). The "any-moderate" CTQ-SF total cut-off
-## is conventionally summarised at score >= 40.
+## CT dichotomization cut-offs on the CTQ-SF total histogram (Figure S21).
+## Bernstein et al. (1998) suggested moderate cut-offs at >=10 (emotional
+## abuse), >=10 (physical abuse), >=8 (sexual abuse), >=15 (emotional
+## neglect), and >=10 (physical neglect). The "any-moderate" CTQ-SF
+## total cut-off is conventionally summarised at score >= 40.
 
 ct_df <- data.frame(
   score = rep(histogram_data$Childhoodtrauma$mid,

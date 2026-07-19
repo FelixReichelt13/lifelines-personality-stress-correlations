@@ -51,7 +51,7 @@
 ####              flag in `02_data_preparation.R` (script 04bc liability h²).
 ####              Childhood trauma is present when at least one CTQ-SF subscale
 ####              meets the literature-based moderate/severe threshold used in
-####              the manuscript and Bernstein et al. (2003): emotional abuse
+####              this project and Bernstein et al. (2003): emotional abuse
 ####              >= 12, physical abuse >= 9, sexual abuse >= 7, emotional
 ####              neglect >= 14 or physical neglect >= 9. A participant is
 ####              coded 0 only when all five subscales are observed and none

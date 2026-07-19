@@ -21,7 +21,7 @@
 ####
 ####   C. table_audit_nonsig_components.tsv
 ####      Only the component-specific correlations that do NOT survive
-####      Bonferroni correction (α = .05/75), for quick editorial reference.
+####      Bonferroni correction (α = .05/75), for quick inspection.
 ####
 ####   D. table_audit_decomp_warnings.tsv
 ####      Bivariate pairings where the A/C/E decomposition is flagged
@@ -29,7 +29,7 @@
 ####
 ####   E. audit_summary.txt
 ####      Human-readable summary: counts of sig / non-sig per component
-####      and a plain-English interpretation guide.
+####      and FDR sensitivity totals.
 ####
 #### Inputs (all under OUT_TABLES)
 #### --------------------------------
@@ -48,12 +48,11 @@
 ####               Benjamini–Hochberg q < .05 computed separately for
 ####               p_rg, p_rc, p_re across all 25 pairings.
 ####
-#### NOTE on philosophy
-#### ------------------
-#### The significance flags here are for INTERNAL REVIEW only.  Tables
-#### that enter the manuscript supplement (S8, S13, S14, S15, S16) do NOT
-#### include significance symbols.  The table notes state the Bonferroni
-#### thresholds and direct the reader to this audit file.
+#### NOTE
+#### ----
+#### This script is an independent post-hoc audit of the INTERNAL TSV
+#### files from scripts 04–04c.  It does not alter those tables; it only
+#### summarises Bonferroni / FDR flags and decomposition warnings.
 #### Version history:
 #### 2026-07-15  v1.1  Ani-aligned multiple testing (/16 uni, /75 bivar);
 ####                   per-component 1-df bivariate LRTs; INTERNAL tables
@@ -213,7 +212,7 @@ if (nrow(biv) > 0) {
 
   summary_lines <- c(
     "==============================================================",
-    "SIGNIFICANCE AUDIT — EJP-26-4766 revision",
+    "SIGNIFICANCE AUDIT — EJP-26-4766",
     sprintf("Generated: %s", Sys.time()),
     "==============================================================",
     "",
@@ -227,13 +226,13 @@ if (nrow(biv) > 0) {
     "covariance fixed to zero) and Bonferroni-corrected over all 75 tests.",
     "",
     "──────────────────────────────────────────────────────────────",
-    "UNIVARIATE (Table S8)",
+    "UNIVARIATE",
     "──────────────────────────────────────────────────────────────",
     sprintf("  h² sig: %s / %s ; c² sig: %s / %s  (after correction, α = %.6f).",
             uni_h2_sig, uni_n, uni_c2_sig, uni_n, BONF_UNI),
     "",
     "──────────────────────────────────────────────────────────────",
-    sprintf("BIVARIATE: STRESS × STRESS (%d pairs, Table S13)", n_ss_pairs),
+    sprintf("BIVARIATE: STRESS × STRESS (%d pairs)", n_ss_pairs),
     "──────────────────────────────────────────────────────────────",
     "",
     sprintf("  Per-component 1-df LRTs (Bonferroni α = %.2e over 75 tests):", BONF_BIV),
@@ -257,7 +256,7 @@ if (nrow(biv) > 0) {
     },
     "",
     "──────────────────────────────────────────────────────────────",
-    sprintf("BIVARIATE: PERSONALITY × STRESS (%d pairs, Table S14)", n_ps_pairs),
+    sprintf("BIVARIATE: PERSONALITY × STRESS (%d pairs)", n_ps_pairs),
     "──────────────────────────────────────────────────────────────",
     "",
     sprintf("  Per-component 1-df LRTs (Bonferroni α = %.2e over 75 tests):", BONF_BIV),
@@ -313,43 +312,6 @@ if (nrow(biv) > 0) {
     "",
     sprintf("DECOMPOSITION WARNINGS: %d pairings flagged as unstable.", nrow(decomp_warn)),
     "  (see table_audit_decomp_warnings.tsv)",
-    "",
-    "==============================================================",
-    "RECOMMENDED MANUSCRIPT LANGUAGE",
-    "==============================================================",
-    "",
-    "Abstract (replace overclaiming version):",
-    "  'Personality traits were consistently phenotypically associated with",
-    "   reported stress exposure. Bivariate ACE analyses indicated partly",
-    "   overlapping genetic and shared-household influences, with the most",
-    "   consistent evidence for loneliness, lack of social support, and",
-    "   life difficulties. Stressful life events showed weaker and less",
-    "   precise personality-related genetic overlap, and some childhood",
-    "   trauma shared-household correlations were imprecise.'",
-    "",
-    "Results — stress x stress:",
-    "  'Genetic and unique-environmental correlations were evaluated with",
-    "   separate 1-df likelihood-ratio tests (full bivariate ACE vs a",
-    "   sub-model with that cross-trait covariance fixed to zero). After",
-    "   Bonferroni correction across 75 component tests (α = .05/75), ...'",
-    "  (Lock exact counts from this audit file after the re LRT re-run.)",
-    "",
-    "Results — personality x stress:",
-    "  'All 15 phenotypic correlations (rP) were reported with SE and 95% CI.",
-    "   Per-component rg, rc, and re were each tested with a 1-df LRT and",
-    "   Bonferroni-corrected over 75 tests (α = .05/75). ...'",
-    "  (Lock exact counts from this audit file after the re LRT re-run.)",
-    "",
-    "Methods — table note (S13, S14; LRT detail in S13c / S14c):",
-    "  'Estimates are bivariate REML correlations with delta-method SEs",
-    "   and 95% CIs. rg, rc, and re were each tested with a 1-df",
-    "   likelihood-ratio test (full model vs sub-model with that covariance",
-    "   fixed to zero). P values were Bonferroni-corrected across",
-    "   25 pairings × 3 correlations = 75 tests (α = .05/75). rP is",
-    "   reported descriptively (estimate, SE, 95% CI) without an LRT.",
-    "   Supplement tables S13/S14 show estimates; S13c/S14c show model",
-    "   comparisons. An internal audit (script 04bd) summarises significance",
-    "   flags for manuscript drafting.'",
     "=============================================================="
   )
 

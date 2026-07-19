@@ -17,7 +17,7 @@
 #### substantially lower than the heritability of the *latent* trait
 #### produced by the lavaan one-factor model (Suppl. Fig. S1 + S2,
 #### Suppl. Table S6). The discrepancy is the empirical justification
-#### for the latent-factor step used in the manuscript Methods.
+#### for the latent-factor step in the primary analysis.
 ####
 #### Model (identical to script 04; see header there for the full
 #### derivation):
@@ -43,9 +43,8 @@
 ####
 #### Outputs   : output/tables/table_S9_perwave_lte_ldi_variance.tsv
 ####
-#### Manuscript: Methods 2.2 (latent factor justification);
-####             Suppl. Table S9 (per-wave ACE);
-####             Suppl. Fig. S1 + S2 (latent factor schematic).
+#### Related outputs: Table S9 (per-wave ACE); Figures S1 + S2
+####             (latent factor schematic).
 ####
 #### Pitfalls
 #### --------

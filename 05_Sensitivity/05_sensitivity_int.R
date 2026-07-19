@@ -40,8 +40,8 @@
 ####             output/tables/table_S10e_int_univariate_variance_components_raw.tsv
 ####             output/tables/sessionInfo_int.txt
 ####
-#### Manuscript: Suppl. Section S3, Table S10 (INT univariate) +
-####             Table S10b/c/d (LRT, model comparison, INT bivariate).
+#### Related outputs: Table S10 (INT univariate) + Tables S10b/c/d
+####             (LRT, model comparison, INT bivariate).
 ####
 #### Pitfalls
 #### --------
@@ -132,7 +132,7 @@ save_table(uni_int_vc,   "table_S10e_int_univariate_variance_components_raw")
 ## Step 4 -- Bivariate ACE on INT stress phenotypes only ----------------
 ##
 ## Bivariate INT restricted to stress x stress (10 pairs); personality
-## bivariate INT is not part of the manuscript sensitivity section.
+## bivariate INT is not part of this sensitivity analysis.
 
 int_stress_phenotypes <- paste0(STRESS_PHENOTYPES, "_INT")
 pairs <- as.data.frame(t(combn(int_stress_phenotypes, 2)), stringsAsFactors = FALSE)

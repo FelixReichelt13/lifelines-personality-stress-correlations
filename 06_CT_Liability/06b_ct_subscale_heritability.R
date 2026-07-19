@@ -39,10 +39,7 @@
 #### Running this script does NOT require ASReml or Lifelines data --
 #### it simply assembles the table into one tidy file for the supplement.
 ####
-#### Manuscript: Suppl. Table S12 (CT liability h^2, total + subscales);
-####             Discussion ("heritability ranging from 30 % to 62 %
-####             for emotional neglect, emotional abuse, and physical
-####             abuse" -- this script makes those numbers explicit).
+#### Related outputs: Table S12b (CT liability h^2, total + subscales).
 ####
 #### Notes
 #### -----
@@ -126,8 +123,7 @@ save_table(ct_subscales, "table_S12b_ct_subscale_heritability")
 ## spans zero and the estimate is uninformative. Applying the lower
 ## cut-off (>= 30) yields 31.3 %, very close to the ASReml continuous
 ## estimate (30.7 %), suggesting the small-sample behaviour at the
-## moderate cut-off is the dominant cause. This is discussed in the
-## manuscript supplement.
+## moderate cut-off is the dominant cause.
 
 message("Step 07b complete. CT-subscale liability h^2 table written to ",
         file.path(OUT_TABLES, "table_S12b_ct_subscale_heritability.tsv"))
