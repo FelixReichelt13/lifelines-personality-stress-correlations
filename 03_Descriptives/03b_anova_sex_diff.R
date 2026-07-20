@@ -29,7 +29,7 @@
 ####
 #### Outputs   : output/tables/table_S3_sex_differences.tsv
 ####
-#### Manuscript: Results 3.1; Suppl. Table S7c.
+#### Related outputs: Table S7c.
 ####
 #### Acknowledgement
 #### ---------------
