@@ -84,8 +84,8 @@
 ####             output/tables/sessionInfo_univariate.txt                (R/ASReml session info)
 ####             output/figures/residuals_univariate_ACE.pdf             (residual diagnostic plots, one page per phenotype)
 ####
-#### Manuscript: Methods 2.3, Results 3.2, Figure 1, Suppl. Table S8
-####             (headline) with supporting Tables S8b - S8e.
+#### Related outputs: Figure 1; Table S8 (headline) with supporting
+####             Tables S8b - S8e.
 ####
 #### Pitfalls
 #### --------
