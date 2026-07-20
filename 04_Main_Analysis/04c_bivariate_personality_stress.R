@@ -36,7 +36,7 @@
 #### ----------------------------------------------------------------
 #### Together with `04b_bivariate_stress_stress.R` (10 stress x stress
 #### pairs), this script contributes 15 of the **25 bivariate pairings**
-#### reported in the manuscript. Following Ani, Nolte, Vaez & Snieder
+#### in the primary bivariate analysis. Following Ani, Nolte, Vaez & Snieder
 #### (2026, Diabetes Obes Metab 28:3344), each of the three cross-trait
 #### correlations (rg, rc, re) is tested SEPARATELY with a 1-df likelihood-
 #### ratio test comparing the full unstructured model against a sub-model
@@ -47,20 +47,20 @@
 #### correlations = 75 tests), matching Ani et al.
 ####
 #### With N > 140,000, statistical significance is expected even for
-#### very small effects; the substantive interpretation in the
-#### manuscript rests on effect sizes, confidence intervals and the
-#### A/C/E decomposition of r_P rather than on p-values alone.
+#### very small effects; substantive interpretation rests on effect sizes,
+#### confidence intervals and the A/C/E decomposition of r_P rather than
+#### on p-values alone.
 ####
 #### Wald p-value caveat
 #### -------------------
 #### Same Wald asymptotic caveat as in script 04b -- the r*_wald_p columns
 #### (INTERNAL only) are normal-approximation two-sided p-values, which can
 #### be misleading near correlation-space boundaries; the 1-df LRT is the
-#### primary test. A footnote to S13 + S14 records this explicitly.
+#### primary test.
 ####
 #### Trait-level expectations
 #### ------------------------
-#### Pre-specified expectations (manuscript Introduction):
+#### Pre-specified expectations:
 ####   * Neuroticism      : strongest positive overlap with all stress
 ####                        phenotypes (negative affect, stress
 ####                        reactivity, maladaptive coping).
@@ -76,8 +76,7 @@
 #### Outputs   : output/tables/table_S14_bivariate_personality_stress.tsv
 ####             output/tables/table_S16_decomp_personality_stress.tsv
 ####
-#### Manuscript: Methods 2.3, Results 3.4, Figure 3,
-####             Suppl. Tables S14 (correlations) + S16 (decomposition).
+#### Related outputs: Figure 3; Tables S14 (correlations) + S16 (decomposition).
 ####
 #### Pitfalls
 #### --------
@@ -138,8 +137,7 @@ results$rg_sig_bonf <- results$p_rg < BONFERRONI_ALPHA
 results$rc_sig_bonf <- results$p_rc < BONFERRONI_ALPHA
 results$re_sig_bonf <- results$p_re < BONFERRONI_ALPHA
 
-## Suppl. Table S14 (MANUSCRIPT): correlations, 95 % CIs, and per-component
-## 1-df LRTs. Same table note as S13 (see 04b_bivariate_stress_stress.R).
+## Table S14: correlations, 95 % CIs, and per-component 1-df LRTs.
 save_table(results[, c("Personality", "Stress", "N",
                        "rp", "rp_SE", "rp_CI_lo", "rp_CI_hi",
                        "rg", "rg_SE", "rg_CI_lo", "rg_CI_hi", "LR_rg", "df_rg", "p_rg",
@@ -147,8 +145,8 @@ save_table(results[, c("Personality", "Stress", "N",
                        "re", "re_SE", "re_CI_lo", "re_CI_hi", "LR_re", "df_re", "p_re")],
            "table_S14_bivariate_personality_stress")
 
-## Suppl. Table S14c (MANUSCRIPT): per-component model comparison (full fit
-## vs each single-covariance-dropped sub-model).
+## Table S14c: per-component model comparison (full fit vs each
+## single-covariance-dropped sub-model).
 save_table(results[, c("Personality", "Stress", "N",
                        "logLik_full", "AIC_full", "BIC_full",
                        "logLik_noG", "AIC_noG", "BIC_noG", "LR_rg", "p_rg",
@@ -156,7 +154,7 @@ save_table(results[, c("Personality", "Stress", "N",
                        "logLik_noE", "AIC_noE", "BIC_noE", "LR_re", "p_re")],
            "table_S14c_personality_stress_model_comparison")
 
-## Suppl. Table S16 (MANUSCRIPT): decomposition + unstable flag.
+## Table S16: A/C/E decomposition + unstable flag.
 save_table(results[, c("Personality", "Stress", "N", "rp",
                        "A_pcor", "A_pcor_SE",
                        "C_pcor", "C_pcor_SE",
@@ -165,7 +163,7 @@ save_table(results[, c("Personality", "Stress", "N", "rp",
                        "decomp_unstable")],
            "table_S16_decomp_personality_stress")
 
-## INTERNAL audit file: every column including sig flags; NOT for upload.
+## INTERNAL audit file: every column including sig flags.
 save_table(results, "table_S14S16_bivariate_personality_stress_full_INTERNAL")
 
 
