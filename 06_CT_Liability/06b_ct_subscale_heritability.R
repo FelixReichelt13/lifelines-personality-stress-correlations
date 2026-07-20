@@ -39,10 +39,7 @@
 #### Running this script does NOT require ASReml or Lifelines data --
 #### it simply assembles the table into one tidy file for the supplement.
 ####
-#### Manuscript: Suppl. Table S12 (CT liability h^2, total + subscales);
-####             Discussion ("heritability ranging from 30 % to 62 %
-####             for emotional neglect, emotional abuse, and physical
-####             abuse" -- this script makes those numbers explicit).
+#### Related outputs: Table S12b (CT liability h^2, total + subscales).
 ####
 #### Notes
 #### -----
