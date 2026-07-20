@@ -123,8 +123,7 @@ save_table(ct_subscales, "table_S12b_ct_subscale_heritability")
 ## spans zero and the estimate is uninformative. Applying the lower
 ## cut-off (>= 30) yields 31.3 %, very close to the ASReml continuous
 ## estimate (30.7 %), suggesting the small-sample behaviour at the
-## moderate cut-off is the dominant cause. This is discussed in the
-## manuscript supplement.
+## moderate cut-off is the dominant cause.
 
 message("Step 07b complete. CT-subscale liability h^2 table written to ",
         file.path(OUT_TABLES, "table_S12b_ct_subscale_heritability.tsv"))
