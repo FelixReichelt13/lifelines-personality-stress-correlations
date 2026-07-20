@@ -100,10 +100,9 @@ for (d in c(OUTPUT_DIR, OUT_TABLES, OUT_FIGURES)) {
 }
 
 
-## 5. Phenotypes used in the manuscript ----------------------------------
-##    Order here is the order used in every figure and table of the paper.
-##    See Methods 2.2 and Supplementary Table S1 for the questionnaire-level
-##    definitions of each phenotype.
+## 5. Phenotypes used in the primary analysis -----------------------------
+##    Order here is the order used in every figure and table.
+##    Questionnaire-level definitions are in Table S1 / the logbook.
 
 STRESS_PHENOTYPES <- c(
   "Childhoodtrauma",         # CTQ-SF total score (Bernstein et al., 2003)
