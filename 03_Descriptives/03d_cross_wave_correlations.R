@@ -32,7 +32,7 @@
 #### Outputs   : output/tables/table_S5_lte_ldi_cross_wave_correlations.tsv
 ####             output/tables/table_S6_lte_ldi_factor_loadings.tsv
 ####
-#### Manuscript: Methods §2.2; Suppl. Tables S9-S10; Suppl. §S2.
+#### Related outputs: Tables S5–S6 (cross-wave correlations / loadings).
 #### Version history:
 #### 2026-07-15  v1.1  Ani-aligned multiple testing (/16 uni, /75 bivar);
 ####                   per-component 1-df bivariate LRTs; INTERNAL tables
