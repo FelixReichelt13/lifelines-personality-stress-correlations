@@ -110,8 +110,7 @@ cbind(summary(model)$varcomp, n = seq_along(model$vparameters))
 
 Each pair yields `rp` (estimate + SE + 95 % CI; **no LRT**), plus `rg`, `rc`, and `re` each tested with a **separate 1-df LRT** (full model vs sub-model with that cross-trait covariance fixed to zero). Bonferroni correction: 25 pairings × 3 correlations = **75** tests (α = .05/75 ≈ .000667).
 
-Manuscript tables **S13/S14** report estimates and LRT *p* values; **S13c/S14c** show model comparisons; **S15/S16** show A/C/E decomposition. `*_INTERNAL.tsv` files (Wald *p*, Bonferroni flags) stay in the repository for audit only — see script **10** (`04d_significance_audit.R`).
-
+Tables **S13/S14** hold estimates and LRT *p* values; **S13c/S14c** hold model comparisons; **S15/S16** hold A/C/E decomposition. `*_INTERNAL.tsv` files (Wald *p*, Bonferroni flags) are for audit only. Script **10** (`04d_significance_audit.R`) summarises those INTERNAL tables independently (Bonferroni / FDR counts and decomposition warnings).
 ## Bivariate pairings
 
 All pairings are fit on the raw scale (script **8** or **9**). Each pairing contributes three Bonferroni-tested correlations (*r*<sub>g</sub>, *r*<sub>c</sub>, *r*<sub>e</sub>); phenotypic *r*<sub>P</sub> is estimate + 95 % CI only.
@@ -161,20 +160,20 @@ Non-standard scoring conventions (CTQ mean imputation when ≤ 2 items missing p
 | **Figure 1** | 7, 15 | `table_S8_*`; `output/figures/figure_1_univariate_ace.*` |
 | **Figure 2** | 8, 15 | `table_S13_*`, `table_S15_*`; `figure_2_stress_stress.*` |
 | **Figure 3** | 9, 15 | `table_S14_*`, `table_S16_*`; `figure_3_personality_stress.*` |
-| **Suppl. S5–S6** | 6 | `table_S5_lte_ldi_cross_wave_correlations.tsv`, `table_S6_lte_ldi_factor_loadings.tsv` |
-| **Suppl. S7a–S7b** | 3 | `table_S7a_descriptives_by_sex.tsv`, `table_S7b_sex_differences_age_adjusted.tsv` |
-| **Suppl. S7c** | 4 | `table_S7c_sex_differences_anova.tsv` |
-| **Suppl. S7d** | 5 | `table_S7d_age_bracket_descriptives.tsv` |
-| **Suppl. S7e** | 1 | `table_S7e_internal_consistency.tsv` |
-| **Suppl. S8–S8e** | 7 | `table_S8_univariate_ace_full.tsv`, `table_S8b`–`S8e` |
-| **Suppl. S9** | 12 | `table_S9_perwave_lte_ldi_variance.tsv` |
-| **Suppl. S10–S10e** | 11 | `table_S10_int_*` (inverse-normal sensitivity) |
-| **Suppl. S11–S12** | 13 | `table_S11_ct_dichotomization_prevalence.tsv`, `table_S12_ct_rrr_liability_h2.tsv` |
-| **Suppl. S12b** | 14 | `table_S12b_ct_subscale_heritability.tsv` |
-| **Suppl. S13–S15** | 8 | `table_S13_bivariate_stress_stress.tsv`, `S13c`, `S15` |
-| **Suppl. S14–S16** | 9 | `table_S14_bivariate_personality_stress.tsv`, `S14c`, `S16` |
-| **Suppl. Figs S3–S21** | 16 | `output/figures/` (see header of `07b_figures_supplementary.R`) |
-| **Audit tables** | 10 | `table_audit_*.tsv`, `audit_summary.txt` (repo only) |
+| **S5–S6** | 6 | `table_S5_lte_ldi_cross_wave_correlations.tsv`, `table_S6_lte_ldi_factor_loadings.tsv` |
+| **S7a–S7b** | 3 | `table_S7a_descriptives_by_sex.tsv`, `table_S7b_sex_differences_age_adjusted.tsv` |
+| **S7c** | 4 | `table_S7c_sex_differences_anova.tsv` |
+| **S7d** | 5 | `table_S7d_age_bracket_descriptives.tsv` |
+| **S7e** | 1 | `table_S7e_internal_consistency.tsv` |
+| **S8–S8e** | 7 | `table_S8_univariate_ace_full.tsv`, `table_S8b`–`S8e` |
+| **S9** | 12 | `table_S9_perwave_lte_ldi_variance.tsv` |
+| **S10–S10e** | 11 | `table_S10_int_*` (inverse-normal sensitivity) |
+| **S11–S12** | 13 | `table_S11_ct_dichotomization_prevalence.tsv`, `table_S12_ct_rrr_liability_h2.tsv` |
+| **S12b** | 14 | `table_S12b_ct_subscale_heritability.tsv` |
+| **S13–S15** | 8 | `table_S13_bivariate_stress_stress.tsv`, `S13c`, `S15` |
+| **S14–S16** | 9 | `table_S14_bivariate_personality_stress.tsv`, `S14c`, `S16` |
+| **Figs S3–S21** | 16 | `output/figures/` (see header of `07b_figures_supplementary.R`) |
+| **Audit** | 10 | `table_audit_*.tsv`, `audit_summary.txt` (independent post-hoc summary) |
 | **Logbook** | — | [`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd) |
 
 ## How to run
@@ -210,29 +209,28 @@ Generated tables and figures go to `output/tables/` and `output/figures/` (gitig
 | CT liability RRR | 13 | No | Minutes |
 | Figures | 15–16 | No | Minutes |
 
-\*Order-of-magnitude from the manuscript production run (~141k adults, three-generation pedigree). Do not run multiple ASReml jobs in parallel on a single licence.
+\*Order-of-magnitude from a full production run (~141k adults, three-generation pedigree). Do not run multiple ASReml jobs in parallel on a single licence.
 
 ### Script index
 
-| # | Script | What it does | Manuscript output |
+| # | Script | What it does | Key output |
 |---|--------|--------------|-------------------|
 | — | [`01_Config/01_setup.R`](01_Config/01_setup.R) | Paths, packages, phenotypes, Bonferroni thresholds (/16 uni, /75 bivar), plotting palette | — |
-| — | [`01_Config/01_helpers.R`](01_Config/01_helpers.R) | Shared utilities (`inverse_normal`, `save_table`, `save_figure`, `ct_dichotomous_moderate`) | — |
-| 1 | [`02_Data_Preparation/02a_score_construction.R`](02_Data_Preparation/02a_score_construction.R) | Item-level scoring: CTQ-SF, Loneliness, SPF-IL, per-wave LTE/LDI → `data/phenotypes_lifelines.Rdata` | Suppl. S7e (Cronbach α) |
+| 1 | [`01_Config/01_helpers.R`](01_Config/01_helpers.R) | Shared utilities (`inverse_normal`, `save_table`, `save_figure`, `ct_dichotomous_moderate`) | — |
 | 2 | [`02_Data_Preparation/02_data_preparation.R`](02_Data_Preparation/02_data_preparation.R) | Merge pedigree, household, phenotypes, personality; adult sample; LTE/LDI latent factors (`lavaan`); dichotomous CT for liability (subscale Bernstein thresholds) → `data/data_prepared.Rdata` | — |
 | 3 | [`03_Descriptives/03_descriptives.R`](03_Descriptives/03_descriptives.R) | Table 1; sex-stratified descriptives | Table 1; S7a–S7b |
 | 4 | [`03_Descriptives/03b_anova_sex_diff.R`](03_Descriptives/03b_anova_sex_diff.R) | Sex-difference ANOVA from published means (no Lifelines data) | S7c |
 | 5 | [`03_Descriptives/03c_age_brackets.R`](03_Descriptives/03c_age_brackets.R) | Phenotype descriptives by age bracket | S7d |
 | 6 | [`03_Descriptives/03d_cross_wave_correlations.R`](03_Descriptives/03d_cross_wave_correlations.R) | LTE/LDI cross-wave correlations and lavaan loadings | S5–S6 |
-| 7 | [`04_Main_Analysis/04_univariate_heritability.R`](04_Main_Analysis/04_univariate_heritability.R) | Univariate ACE + AE + CE; boundary 1-df LRTs for h² and c²; Bonferroni /16; 95 % CIs | Figure 1; S8, S8b–S8e; INTERNAL audit |
+| 7 | [`04_Main_Analysis/04_univariate_heritability.R`](04_Main_Analysis/04_univariate_heritability.R) | Univariate ACE + AE + CE; boundary 1-df LRTs for h² and c²; Bonferroni /16; 95 % CIs | Figure 1; S8, S8b–S8e |
 | 8 | [`04_Main_Analysis/04b_bivariate_stress_stress.R`](04_Main_Analysis/04b_bivariate_stress_stress.R) | Bivariate ACE, 10 stress × stress pairs; per-component 1-df LRTs (r_g, r_c, r_e); Bonferroni /75 | Figure 2; S13, S13c, S15 |
 | 9 | [`04_Main_Analysis/04c_bivariate_personality_stress.R`](04_Main_Analysis/04c_bivariate_personality_stress.R) | Bivariate ACE, 15 personality × stress pairs; same LRT structure as 04b | Figure 3; S14, S14c, S16 |
-| 10 | [`04_Main_Analysis/04d_significance_audit.R`](04_Main_Analysis/04d_significance_audit.R) | Bonferroni flags, FDR sensitivity, `audit_summary.txt` from INTERNAL tables | Audit (repo only) |
+| 10 | [`04_Main_Analysis/04d_significance_audit.R`](04_Main_Analysis/04d_significance_audit.R) | Independent Bonferroni / FDR audit and `audit_summary.txt` from INTERNAL tables | `table_audit_*`, `audit_summary.txt` |
 | 11 | [`05_Sensitivity/05_sensitivity_int.R`](05_Sensitivity/05_sensitivity_int.R) | Inverse-normal sensitivity (univariate + stress × stress bivariate); sources `fit_ace` / `fit_biv` from 04 + 04b | S10–S10e |
-| 12 | [`05_Sensitivity/05b_perwave_univariate.R`](05_Sensitivity/05b_perwave_univariate.R) | Univariate ACE per LTE/LDI wave | S11 (per-wave) |
+| 12 | [`05_Sensitivity/05b_perwave_univariate.R`](05_Sensitivity/05b_perwave_univariate.R) | Univariate ACE per LTE/LDI wave | S9 (per-wave) |
 | 13 | [`06_CT_Liability/06_rrr_liability_heritability.R`](06_CT_Liability/06_rrr_liability_heritability.R) | First-degree-relative RRR → Wray–Gottesman liability h² for dichotomous CT | S11–S12 |
 | 14 | [`06_CT_Liability/06b_ct_subscale_heritability.R`](06_CT_Liability/06b_ct_subscale_heritability.R) | Assemble CT subscale heritability table (no Lifelines data) | S12b |
-| 15 | [`07_Figures/07_figures_main.R`](07_Figures/07_figures_main.R) | Main-text Figures 1–3 (embedded summary numbers) | Figures 1–3 |
+| 15 | [`07_Figures/07_figures_main.R`](07_Figures/07_figures_main.R) | Main Figures 1–3 (embedded summary numbers) | Figures 1–3 |
 | 16 | [`07_Figures/07b_figures_supplementary.R`](07_Figures/07b_figures_supplementary.R) | Supplementary Figures S3–S21 | S3–S21 |
 | — | [`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd) | Narrative walk-through for reviewers | HTML logbook |
 
