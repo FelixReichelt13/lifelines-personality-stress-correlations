@@ -40,8 +40,8 @@
 ####             output/tables/table_S10e_int_univariate_variance_components_raw.tsv
 ####             output/tables/sessionInfo_int.txt
 ####
-#### Manuscript: Suppl. Section S3, Table S10 (INT univariate) +
-####             Table S10b/c/d (LRT, model comparison, INT bivariate).
+#### Related outputs: Table S10 (INT univariate) + Tables S10b/c/d
+####             (LRT, model comparison, INT bivariate).
 ####
 #### Pitfalls
 #### --------
