@@ -279,9 +279,8 @@ save_figure(fig_S3_S16, "figure_S3_to_S16_age_bracket_means",
 ## 2. Figure S17 -- distributions approximating normality
 ## -----------------------------------------------------------------------
 ##
-## Manuscript Results 3.1: "The personality traits and social support
-## exhibited distributions approximating normality (Supplementary
-## Figure S17)."
+## Personality traits and social support: approximately normal raw
+## distributions (Figure S17).
 
 hist_long <- function(phenos) {
   do.call(rbind, lapply(phenos, function(nm) {
@@ -308,9 +307,8 @@ save_figure(fig_S17, "figure_S17_distributions_normal",
 ## 3. Figure S18 -- skewed distributions
 ## -----------------------------------------------------------------------
 ##
-## Manuscript Results 3.1: "Loneliness, childhood trauma, and each
-## single-wave measure of stressful life events and life difficulties
-## showed strongly skewed distributions (Supplementary Figure S18)."
+## Loneliness, childhood trauma, and single-wave LTE/LDI: strongly
+## skewed raw distributions (Figure S18).
 
 fig_S18 <- ggplot(hist_long(skewed_phenos), aes(value)) +
   geom_histogram(bins = 25, fill = COR_COLOURS[["rp"]], colour = "white") +
@@ -416,12 +414,11 @@ save_figure(fig_S20, "figure_S20_raw_vs_int_ace", width = 10, height = 8)
 ## 6. Figure S21 -- CT dichotomization cut-offs
 ## -----------------------------------------------------------------------
 ##
-## Manuscript Results 3.2: "childhood trauma was dichotomized using
-## literature-based cutoffs (Supplementary Figure S21)." Bernstein
-## et al. (1998) suggested moderate cut-offs at >=10 (emotional abuse),
-## >=10 (physical abuse), >=8 (sexual abuse), >=15 (emotional neglect),
-## and >=10 (physical neglect). The "any-moderate" CTQ-SF total cut-off
-## is conventionally summarised at score >= 40.
+## CT dichotomization cut-offs on the CTQ-SF total histogram (Figure S21).
+## Bernstein et al. (1998) suggested moderate cut-offs at >=10 (emotional
+## abuse), >=10 (physical abuse), >=8 (sexual abuse), >=15 (emotional
+## neglect), and >=10 (physical neglect). The "any-moderate" CTQ-SF
+## total cut-off is conventionally summarised at score >= 40.
 
 ct_df <- data.frame(
   score = rep(histogram_data$Childhoodtrauma$mid,
