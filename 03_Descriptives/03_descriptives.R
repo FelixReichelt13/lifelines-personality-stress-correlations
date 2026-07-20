@@ -53,8 +53,8 @@ phenotypes <- intersect(c(STRESS_PHENOTYPES, PERSONALITY_PHENOTYPES),
 
 ## Step 1 — Table 1: overall sample descriptives ------------------------
 ##
-## Manuscript Table 1: N, mean (SD), median (IQR) per phenotype, plus
-## age and sex composition of the cohort.
+## Table 1: N, mean (SD), median (IQR) per phenotype, plus age and sex
+## composition of the cohort.
 
 desc_overall <- data.table(
   Phenotype = c("AGE_1A1", phenotypes),
