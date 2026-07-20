@@ -64,19 +64,18 @@ library(gtable)       # `gtable_add_cols()`, `gtable_add_grob()` to modify the g
 ## -----------------------------------------------------------------------
 ## 0. Embedded manuscript numbers
 ## -----------------------------------------------------------------------
-## Univariate ACE point estimates with delta-method SEs (Suppl. Table S8
-## baseline, Suppl. Table S10 INT). The stacked-bar figure shows only
+## Univariate ACE point estimates with delta-method SEs (Table S8
+## baseline, Table S10 INT). The stacked-bar figure shows only
 ## the proportions h^2 + c^2 + e^2 = 1; the SEs are listed alongside
 ## so the data.frame can be re-used to render error bars or to verify
-## numbers against the supplement.
+## numbers against the tables
 ##
 ## Provenance: ASReml-R univariate ACE -- variance components extracted
 ## with `vpredict(model, h2 ~ V2 / (V1 + V2 + V3))` etc. (Reference
 ## Manual 4.2, Section 4.6). The SEs are the delta-method standard
 ## errors that `vpredict()` returns alongside each `Estimate`. The
-## actual production run is `04_univariate_heritability.R` (Suppl.
-## Table S8 / S10); numbers below are copied verbatim from that
-## output for the published manuscript.
+## production run is `04_univariate_heritability.R` (Tables S8 / S10);
+## numbers below are copied from that output.
 ##
 ## INT row covers only the five stress phenotypes (personality traits
 ## are not INT-transformed because they are already approximately
@@ -124,9 +123,8 @@ univariate_int <- data.frame(
             0.010, 0.010, 0.010),
   stringsAsFactors = FALSE)
 
-## Bivariate stress x stress (Table 3 in the paper). Both directions of
-## each pair are listed because the figure shows the 5x5 grid; SEs are
-## taken from the manuscript (Suppl. Table S13).
+## Bivariate stress x stress. Both directions of each pair are listed
+## because the figure shows the 5x5 grid; SEs are from Table S13.
 
 stress_stress <- read.table(text = "
 Exp1                  Exp2                    rp     rp_se   rg     rg_se   rc     rc_se   re     re_se
