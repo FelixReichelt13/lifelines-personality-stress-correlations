@@ -106,7 +106,7 @@
 #### tiny effects, so the substantive interpretation rests on effect sizes,
 #### confidence intervals, and the A/C/E decomposition of r_P rather than
 #### on p-values alone. A Benjamini-Hochberg FDR sensitivity analysis is
-#### still produced in the INTERNAL audit file (script 04bd).
+#### still produced in the INTERNAL audit file (script 04d).
 ####
 #### Wald p-value caveat
 #### -------------------
@@ -124,9 +124,9 @@
 ####             output/tables/table_S15_decomp_stress_stress.tsv
 ####             output/tables/table_S13S15_bivariate_stress_stress_full_INTERNAL.tsv
 ####
-#### Manuscript: Methods 2.3, Results 3.3, Figure 2,
-####             Suppl. Tables S13 (estimates + LRTs), S13c (model comparison),
-####             S15 (decomposition). LRT significance counts: script 04bd.
+#### Related outputs: Figure 2; Tables S13 (estimates + LRTs), S13c (model
+####             comparison), S15 (decomposition). LRT significance counts:
+####             script 04d.
 ####
 #### Pitfalls
 #### --------
@@ -409,18 +409,7 @@ results$rg_sig_bonf <- results$p_rg < BONFERRONI_ALPHA
 results$rc_sig_bonf <- results$p_rc < BONFERRONI_ALPHA
 results$re_sig_bonf <- results$p_re < BONFERRONI_ALPHA
 
-## Suppl. Table S13 (MANUSCRIPT): correlations, 95 % CIs, and per-component
-## 1-df LRTs. Table note (to be added in Word/LaTeX):
-##   "The additive-genetic (rg), shared-household (rc) and unique-
-##    environmental (re) correlations were each tested with a 1-df
-##    likelihood-ratio test comparing the full bivariate ACE model against
-##    a sub-model with that single cross-trait covariance fixed to zero
-##    (chi^2(1); a covariance is sign-unrestricted, so no boundary
-##    correction is applied). To account for multiple testing, p values
-##    were Bonferroni-corrected across 25 pairings x 3 correlations = 75
-##    tests (alpha = .05/75 = 6.67e-4). rp is the phenotypic correlation,
-##    reported descriptively with its 95 % CI. Estimates are bivariate REML
-##    with delta-method SEs and normal-approximation 95 % CIs."
+## Table S13: correlations, 95 % CIs, and per-component 1-df LRTs.
 save_table(results[, c("Phenotype1", "Phenotype2", "N",
                        "rp", "rp_SE", "rp_CI_lo", "rp_CI_hi",
                        "rg", "rg_SE", "rg_CI_lo", "rg_CI_hi", "LR_rg", "df_rg", "p_rg",
@@ -428,9 +417,8 @@ save_table(results[, c("Phenotype1", "Phenotype2", "N",
                        "re", "re_SE", "re_CI_lo", "re_CI_hi", "LR_re", "df_re", "p_re")],
            "table_S13_bivariate_stress_stress")
 
-## Suppl. Table S13c (MANUSCRIPT): per-component model comparison. Shows the
-## full (unstructured ACE) fit and each single-covariance-dropped sub-model
-## side by side so every 1-df LR test is fully reproducible.
+## Table S13c: per-component model comparison (full unstructured ACE vs
+## each single-covariance-dropped sub-model).
 save_table(results[, c("Phenotype1", "Phenotype2", "N",
                        "logLik_full", "AIC_full", "BIC_full",
                        "logLik_noG", "AIC_noG", "BIC_noG", "LR_rg", "p_rg",
@@ -438,9 +426,8 @@ save_table(results[, c("Phenotype1", "Phenotype2", "N",
                        "logLik_noE", "AIC_noE", "BIC_noE", "LR_re", "p_re")],
            "table_S13c_stress_stress_model_comparison")
 
-## Suppl. Table S15 (MANUSCRIPT): decomposition; flag unstable rows.
-## Rows with decomp_unstable = TRUE (very small rp or out-of-range
-## proportions) should be footnoted rather than described in the text.
+## Table S15: A/C/E decomposition; decomp_unstable flags small rp or
+## out-of-range proportions.
 save_table(results[, c("Phenotype1", "Phenotype2", "N", "rp",
                        "A_pcor", "A_pcor_SE",
                        "C_pcor", "C_pcor_SE",
@@ -449,7 +436,7 @@ save_table(results[, c("Phenotype1", "Phenotype2", "N", "rp",
                        "decomp_unstable")],
            "table_S15_decomp_stress_stress")
 
-## INTERNAL audit file: every column including sig flags; NOT for upload.
+## INTERNAL audit file: every column including sig flags.
 save_table(results, "table_S13S15_bivariate_stress_stress_full_INTERNAL")
 
 
