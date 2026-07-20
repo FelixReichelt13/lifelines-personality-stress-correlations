@@ -357,10 +357,10 @@ main_results$c2_sig_bonf    <- main_results$p_C < UNIVARIATE_BONFERRONI_ALPHA
 ## Step 4 -- Save the five tables + sessionInfo -------------------------
 ##
 ## Two versions of Table S8:
-##   table_S8_univariate_ace_full.tsv           -- manuscript supplement
+##   table_S8_univariate_ace_full.tsv           -- public table
 ##     (estimates, SEs, 95 % CIs, LRT p-values; NO sig flags)
 ##   table_S8_univariate_ace_full_INTERNAL.tsv  -- internal audit only
-##     (same + h2_sig_bonf / c2_sig_bonf; NOT uploaded to the public repository)
+##     (same + h2_sig_bonf / c2_sig_bonf)
 
 mscp_cols <- c("Phenotype", "N",
                "h2", "h2_SE", "h2_CI_lo", "h2_CI_hi",
