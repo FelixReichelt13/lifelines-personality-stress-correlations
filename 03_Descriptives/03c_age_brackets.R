@@ -24,7 +24,7 @@
 #### Inputs    : data/data_prepared.Rdata (from script 02).
 #### Outputs   : output/tables/table_S7_age_bracket_descriptives.tsv
 ####
-#### Manuscript: Results 3.1, Suppl. Figure S2.
+#### Related outputs: Table S7d; Figure S2.
 ####
 #### Pitfalls
 #### --------
