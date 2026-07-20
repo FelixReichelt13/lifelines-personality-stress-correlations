@@ -346,10 +346,9 @@ vc_results   <- do.call(rbind, lapply(results, `[[`, "vc"))
 ## threshold is alpha = .05 / 16 = .003125. (Ani et al. used the same
 ## phenotypes-x-2-components rule, there 16 x 2 = 32.) With N > 140,000
 ## every LRT is highly significant regardless of the exact threshold. The
-## flags are kept in an INTERNAL audit file only; the manuscript supplement
-## table does not include star symbols or _sig_bonf columns so that the
-## tables stay estimate-centred rather than visually classifying results as
-## significant / non-significant. Threshold from 01_setup.R: α = .05 / 16.
+## Bonferroni flags (h2_sig_bonf / c2_sig_bonf) are written only to the
+## INTERNAL audit file; the public Table S8 keeps estimates, SEs, CIs and
+## LRT p-values without star symbols. Threshold from 01_setup.R: α = .05 / 16.
 
 main_results$h2_sig_bonf    <- main_results$p_A < UNIVARIATE_BONFERRONI_ALPHA
 main_results$c2_sig_bonf    <- main_results$p_C < UNIVARIATE_BONFERRONI_ALPHA
