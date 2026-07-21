@@ -357,40 +357,7 @@ internal_consistency <- data.table(
                                             # E is 11 NEO-FFI items (one
                                             # FFI item omitted by Lifelines);
                                             # C is 12 NEO-FFI items.
-  Cronbach_alpha = c(ctq_alpha_total,
-                     ctq_alpha_ea, ctq_alpha_pa, ctq_alpha_sa,
-                     ctq_alpha_en, ctq_alpha_pn,
-                     ll_alpha, ss_alpha,
-                     lte_alpha, ldi_alpha,
-                     ## Published Dutch NEO-PI-R / NEO-FFI alphas
-                     ## (Hoekstra, Ormel & de Fruyt, 2007). The
-                     ## Lifelines NEO release ships only the SUM*
-                     ## totals, not the items, so we cannot compute
-                     ## the Lifelines-specific alphas here. Replace
-                     ## these with the Lifelines-computed values
-                     ## once the items become available in the
-                     ## extraction.
-                     ##
-                     ## Notes:
-                     ##  (a) the Neuroticism phenotype used in this
-                     ##      paper is the **full six-facet NEO-PI-R
-                     ##      domain sum** (48 items), so the correct
-                     ##      published reference is the NEO-PI-R
-                     ##      Neuroticism domain alpha (~0.92,
-                     ##      Hoekstra et al. 2007), NOT the 12-item
-                     ##      NEO-FFI Neuroticism alpha (~0.85);
-                     ##  (b) the Lifelines NEO-FFI Extraversion is
-                     ##      11 items (one omitted by mistake), so
-                     ##      the published 12-item alpha is a
-                     ##      *ceiling* for the actual 11-item alpha.
-                     0.92, 0.79, 0.81),
-  Source = c(rep("Lifelines, this study", 8L),
-             rep("Lifelines, this study (per wave)",
-                 length(lte_alpha) + length(ldi_alpha)),
-             "Hoekstra et al. 2007 (Dutch NEO-PI-R manual, 48-item domain alpha)",
-             "Hoekstra et al. 2007 (Dutch NEO-FFI manual, 12-item ceiling for 11-item E)",
-             "Hoekstra et al. 2007 (Dutch NEO-FFI manual)")
-)
+ 
 
 dir.create(OUT_TABLES, showWarnings = FALSE, recursive = TRUE)
 save_table(internal_consistency, "table_S7e_internal_consistency")
