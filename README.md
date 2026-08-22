@@ -1,69 +1,63 @@
-# lifelines-personality-stress-correlations
+# Familial Correlation between Personality and Stress Exposure
+### Insights from the Multigenerational Lifelines Cohort Study
 
-Analysis code for EJP-26-4766 — *Familial Correlation between Personality and Stress Exposure: Insights from the Multigenerational Lifelines Cohort Study* (Lifelines cohort; ASReml-R ACE models).
+**Authors:** Reichelt, F., Wang, R., Triatin, R. D., Bos, M., Kavousi, M., de Geus, E. J. C., Snieder, H.  
+**Journal:** *European Journal of Personality* (manuscript EJP-26-4766, in revision)  
+**Institution:** University Medical Center Groningen · [Stress in Action](https://stress-in-action.nl) · [Lifelines](https://www.lifelines.nl)
 
-Individual-level data are **not** included. See [Data availability](#data-availability) and [`data/README.md`](data/README.md).
+### About this study
+
+People differ widely in how frequently and powerfully they report stressful circumstances. In this study we tested to what extent these differences are influenced by two factors that family members partly share: the family environment and genetic resemblance. We also tested how far personality mediates the link between family background and self-reported stress.
+
+We used data from more than 140,000 adults in the Lifelines Cohort Study in the Netherlands. The stress measures were childhood trauma, stressful life events, ongoing life difficulties, loneliness, and lack of social support. The personality traits were neuroticism, extraversion, and conscientiousness.
+
+Individuals with higher extraversion and conscientiousness typically reported less stress, especially for loneliness and lack of social support. Individuals with higher neuroticism reported more stress across all domains. With pedigree-based models we estimated genetic, shared household, and person-specific environmental contributions to stress exposure, personality, and their association. Person-specific environmental influences and the shared household environment explained a large part of individual differences in self-reported stress. Self-reported stress exposures were also partly heritable, with the largest genetic influence on retrospectively reported childhood trauma. There was clear overlap in the genetic factors influencing personality and stress exposures. This fits with personality shaping the environments people evoke or select, and with personality influencing appraisal, memory, and disclosure in self-report.
+
+Self-reported stress exposure does not reflect external events alone. Environments, perception, and recall are also linked to personality through overlapping genetic and shared environmental factors.
+
+*Keywords: stress exposure, personality traits, genetic correlation, heritability, stressful life events*
+
+This repository holds the R code for the analyses, tables, and figures in the manuscript.
+
+**Start here:** [`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd)  
+**License:** MIT. **Data:** no individual-level Lifelines data included ([details](#data-availability))
+
+Analysis scripts are in numbered folders (`02_Data_Preparation` through `07_Figures`). Flat copies for browsing are in [`00_All_Scripts/`](00_All_Scripts/). Open-science documentation: [`OPEN_SCIENCE_STATEMENT.md`](OPEN_SCIENCE_STATEMENT.md).
 
 ## Contents
 
-- [Reviewer quick path](#reviewer-quick-path)
-- [Primary vs exploratory analyses](#primary-vs-exploratory-analyses)
+- [About this study](#about-this-study)
 - [Phenotypes](#phenotypes)
 - [ACE models with ASReml-R](#ace-models-with-asreml-r)
 - [Bivariate pairings](#bivariate-pairings)
 - [Transformations and scoring](#transformations-and-scoring)
 - [Software](#software)
 - [Manuscript output map](#manuscript-output-map)
-- [How to run](#how-to-run)
 - [Data availability](#data-availability)
 - [Open Science](#open-science)
 - [Affiliation](#affiliation)
 - [Citation](#citation)
 
-## Reviewer quick path
-
-You do **not** need an ASReml licence to audit most of the pipeline; several steps need no Lifelines data at all:
-
-1. **[`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd)** — item-level scoring, exclusions, and analysis narrative (knit to HTML locally, or read the `.Rmd` in GitHub).
-2. **Scripts 4, 13–15** — sex-difference ANOVA from published means, CT subscale table, and all figures; numbers are embedded or assembled without individual-level data.
-3. **Scripts 3, 5–6** — descriptives and cross-wave diagnostics; CRAN only (require prepared Lifelines extracts, no ASReml).
-4. **Script 10** (`04d_significance_audit.R`) — Bonferroni / FDR audit from `*_INTERNAL.tsv` files produced by scripts 7–9; inspectable once those tables exist from a prior run.
-
-Full reproduction requires Lifelines HPC access, the files listed in [`data/README.md`](data/README.md), and ASReml-R for scripts 7–11.
-
-## Primary vs exploratory analyses
-
-**Primary (confirmatory):** univariate and bivariate ACE on the **raw** scale for all eight phenotypes; 25 bivariate pairings with Bonferroni correction (/16 univariate, /75 bivariate). CT enters as continuous `Childhoodtrauma`.
-
-**Exploratory** (reported separately; not part of the primary multiplicity correction):
-
-- Inverse-normal sensitivity — script 11; Suppl. Tables S10–S10e
-- Age-bracket descriptives — script 5; Suppl. Table S7d; Suppl. Figs S3–S16
-- CTQ-SF subscale heritability — script 13; Suppl. Table S12b
-- Liability-scale CT (*h²* from RRR) — folder `06_CT_Liability`; Suppl. Tables S11–S12
-
-Details: [OPEN_SCIENCE_STATEMENT.md](OPEN_SCIENCE_STATEMENT.md) §1 (Preregistration).
-
 ## Phenotypes
 
-Eight phenotypes enter the primary ACE models (scripts 7–9). Analytic sample: adults ≥ 18 years (N ≈ 141,751) from the Lifelines extraction with three-generation pedigree data. Main exclusions: participants < 18 years; pedigree members with unknown or inconsistent parental IDs; LTE/LDI sum scores with any missing item within a wave (complete-case scoring). Further sampling details are in [OPEN_SCIENCE_STATEMENT.md](OPEN_SCIENCE_STATEMENT.md).
+Eight phenotypes were analysed in adults aged ≥ 18 years (N ≈ 141,751) from the Lifelines extraction with three-generation pedigree data. Further sampling details are in [OPEN_SCIENCE_STATEMENT.md](OPEN_SCIENCE_STATEMENT.md).
 
-| Phenotype | Instrument | Scale in primary ACE |
-|-----------|------------|----------------------|
+| Phenotype | Instrument | Scale in primary analysis |
+|-----------|------------|---------------------------|
 | `Childhoodtrauma` | CTQ-SF total (25 clinical items) | Continuous (raw) |
 | `Loneliness` | De Jong Gierveld Loneliness Scale (6 items) | Continuous (raw) |
 | `Lack_of_social_support` | SPF-IL social well-being (9 items, reversed) | Continuous (raw) |
-| `Stressful_life_events` | LTE latent factor across waves (`lavaan`, FIML) | Continuous (SD = 1 after prep) |
-| `Life_difficulties` | LDI latent factor across waves (`lavaan`, FIML) | Continuous (SD = 1 after prep) |
+| `Stressful_life_events` | LTE latent factor across waves | Continuous (SD = 1 after prep) |
+| `Life_difficulties` | LDI latent factor across waves | Continuous (SD = 1 after prep) |
 | `Neuroticism` | NEO-PI-R six-facet domain sum | z-scored (Lifelines extract) |
 | `Extraversion` | NEO-FFI domain SUM3 | z-scored (Lifelines extract) |
 | `Conscientiousness` | NEO-FFI domain SUM3 | z-scored (Lifelines extract) |
 
-Inverse-normal-transformed stress phenotypes are used in the sensitivity analysis (script 11) only.
+Item-level scoring, exclusions, and the cross-wave latent-factor step for LTE and LDI are documented in [`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd).
 
 ## ACE models with ASReml-R
 
-Univariate and bivariate ACE models are fit with ASReml-R (scripts 7–9; inverse-normal sensitivity in script 11). All models adjust for sex and a quadratic age trend. Additive genetic effects use the three-generation pedigree; shared environment is modelled at the residential household level. Full model specification, ASReml syntax, and variance-component definitions are in the script headers and [`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd).
+Univariate and bivariate ACE models were fit with ASReml-R (scripts 7–9; inverse-normal sensitivity in script 11). All models adjust for sex and a quadratic age trend. Additive genetic effects use the three-generation pedigree; shared environment is modelled at the residential household level. Full model specification and variance-component definitions are in the script headers and the logbook.
 
 ### Univariate (script 7)
 
@@ -83,7 +77,7 @@ Each fit contributes to Suppl. Tables **S8b** (LRTs) and **S8c** (logLik / AIC /
 
 Two-trait REML is used for all 25 pairings. Each pair yields phenotypic correlation (*r*<sub>P</sub>: estimate + SE + 95 % CI; **no LRT**), plus *r*<sub>g</sub>, *r*<sub>c</sub>, and *r*<sub>e</sub> each tested with a **separate 1-df LRT** (full model vs sub-model with that cross-trait covariance fixed to zero). Bonferroni correction: 25 pairings × 3 correlations = **75** tests (α = .05/75 ≈ .000667).
 
-Manuscript tables **S13/S14** report estimates and LRT *p* values; **S13c/S14c** show model comparisons; **S15/S16** show A/C/E decomposition. `*_INTERNAL.tsv` files (Wald *p*, Bonferroni flags) stay in the repository for audit only — see script **10** (`04d_significance_audit.R`).
+Manuscript tables **S13/S14** report estimates and LRT *p* values; **S13c/S14c** show model comparisons; **S15/S16** show A/C/E decomposition. `*_INTERNAL.tsv` files (Wald *p*, Bonferroni flags) stay in the repository for audit only. See script **10** (`04d_significance_audit.R`).
 
 ## Bivariate pairings
 
@@ -146,64 +140,7 @@ Non-standard scoring conventions (CTQ mean imputation when ≤ 2 items missing p
 | **Suppl. S14–S16** | 9 | `table_S14_bivariate_personality_stress.tsv`, `S14c`, `S16` |
 | **Suppl. Figs S3–S21** | 15 | `output/figures/` (see header of `07b_figures_supplementary.R`) |
 | **Audit tables** | 10 | `table_audit_*.tsv`, `audit_summary.txt` (repo only) |
-| **Logbook** | — | [`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd) |
-
-## How to run
-
-Run from the repository root. Always start with `01_Config/01_setup.R`.
-
-**Browse or download all scripts in one place:** [`00_All_Scripts/`](00_All_Scripts/) (flat mirrors — run from the topic folders above, not from `00_All_Scripts/`).
-
-```r
-setwd("/path/to/lifelines-personality-stress-correlations")
-source("run_all.R")
-```
-
-Or step through manually — always start with `01_Config/01_setup.R`.
-
-Script **11** (`05_sensitivity_int.R`) needs `fit_ace()` and `fit_biv()` from scripts **7** and **8** in the same R session. Set the working directory to the folder that contains this `README.md` before sourcing.
-
-Generated tables and figures go to `output/tables/` and `output/figures/` (gitignored).
-
-**Requirements:** R ≥ 4.3; ASReml-R 4.2 for scripts 7–11; CRAN packages in `01_Config/01_setup.R`. One ASReml licence seat on HPC — no parallel ASReml jobs.
-
-### Compute expectations
-
-| Stage | Scripts | ASReml? | Typical wall time (serial, Lifelines HPC)* |
-|-------|---------|---------|---------------------------------------------|
-| Item scoring + merge | 1–2 | No | Minutes–1 h (depends on raw CSVs) |
-| Descriptives + SEM diagnostics | 3–6 | No | Minutes |
-| Univariate ACE (8 phenotypes × ACE/AE/CE) | 7 | Yes | Hours |
-| Bivariate ACE (25 pairs × nested LRTs) | 8–9 | Yes | Dominant cost; hours–days |
-| Significance audit | 10 | No | Seconds |
-| INT sensitivity | 11 | Yes | Hours (subset of 7–8) |
-| CT liability RRR | 12 | No | Minutes |
-| Figures | 14–15 | No | Minutes |
-
-\*Order-of-magnitude from the manuscript production run (~141k adults, three-generation pedigree). Do not run multiple ASReml jobs in parallel on a single licence.
-
-### Script index
-
-| # | Script | What it does | Manuscript output |
-|---|--------|--------------|-------------------|
-| — | [`01_Config/01_setup.R`](01_Config/01_setup.R) | Paths, packages, phenotypes, Bonferroni thresholds (/16 uni, /75 bivar), plotting palette | — |
-| — | [`01_Config/01_helpers.R`](01_Config/01_helpers.R) | Shared utilities (`inverse_normal`, `save_table`, `save_figure`, `ct_dichotomous_moderate`) | — |
-| 1 | [`02_Data_Preparation/02a_score_construction.R`](02_Data_Preparation/02a_score_construction.R) | Item-level scoring: CTQ-SF, Loneliness, SPF-IL, per-wave LTE/LDI sums → `data/phenotypes_lifelines.Rdata` | — |
-| 2 | [`02_Data_Preparation/02_data_preparation.R`](02_Data_Preparation/02_data_preparation.R) | Merge pedigree, household, phenotypes, personality; adult sample; LTE/LDI latent factors (`lavaan`); dichotomous CT for liability (subscale Bernstein thresholds) → `data/data_prepared.Rdata` | — |
-| 3 | [`03_Descriptives/03_descriptives.R`](03_Descriptives/03_descriptives.R) | Table 1; sex-stratified descriptives | Table 1; S7a–S7b |
-| 4 | [`03_Descriptives/03b_anova_sex_diff.R`](03_Descriptives/03b_anova_sex_diff.R) | Sex-difference ANOVA from published means (no Lifelines data) | S7c |
-| 5 | [`03_Descriptives/03c_age_brackets.R`](03_Descriptives/03c_age_brackets.R) | Phenotype descriptives by age bracket | S7d |
-| 6 | [`03_Descriptives/03d_cross_wave_correlations.R`](03_Descriptives/03d_cross_wave_correlations.R) | LTE/LDI cross-wave correlations and lavaan loadings | S5–S6 |
-| 7 | [`04_Main_Analysis/04_univariate_heritability.R`](04_Main_Analysis/04_univariate_heritability.R) | Univariate ACE + AE + CE; boundary 1-df LRTs for h² and c²; Bonferroni /16; 95 % CIs | Figure 1; S8, S8b–S8e; INTERNAL audit |
-| 8 | [`04_Main_Analysis/04b_bivariate_stress_stress.R`](04_Main_Analysis/04b_bivariate_stress_stress.R) | Bivariate ACE, 10 stress × stress pairs; per-component 1-df LRTs (r_g, r_c, r_e); Bonferroni /75 | Figure 2; S13, S13c, S15 |
-| 9 | [`04_Main_Analysis/04c_bivariate_personality_stress.R`](04_Main_Analysis/04c_bivariate_personality_stress.R) | Bivariate ACE, 15 personality × stress pairs; same LRT structure as 04b | Figure 3; S14, S14c, S16 |
-| 10 | [`04_Main_Analysis/04d_significance_audit.R`](04_Main_Analysis/04d_significance_audit.R) | Bonferroni flags, FDR sensitivity, `audit_summary.txt` from INTERNAL tables | Audit (repo only) |
-| 11 | [`05_Sensitivity/05_sensitivity_int.R`](05_Sensitivity/05_sensitivity_int.R) | Inverse-normal sensitivity (univariate + stress × stress bivariate); sources `fit_ace` / `fit_biv` from 04 + 04b | S10–S10e |
-| 12 | [`06_CT_Liability/06_rrr_liability_heritability.R`](06_CT_Liability/06_rrr_liability_heritability.R) | First-degree-relative RRR → Wray–Gottesman liability h² for dichotomous CT | S11–S12 |
-| 13 | [`06_CT_Liability/06b_ct_subscale_heritability.R`](06_CT_Liability/06b_ct_subscale_heritability.R) | Assemble CT subscale heritability table (no Lifelines data) | S12b |
-| 14 | [`07_Figures/07_figures_main.R`](07_Figures/07_figures_main.R) | Main-text Figures 1–3 (embedded summary numbers) | Figures 1–3 |
-| 15 | [`07_Figures/07b_figures_supplementary.R`](07_Figures/07b_figures_supplementary.R) | Supplementary Figures S3–S21 | S3–S21 |
-| — | [`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd) | Narrative walk-through for reviewers | HTML logbook |
+| **Logbook** | n/a | [`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd) |
 
 ## Data availability
 
@@ -221,11 +158,10 @@ This work was carried out in the context of the [Stress in Action](https://stres
 
 ## Citation
 
-> Reichelt, F., Rujia Wang, Rima D. Triatin, Martje Bos, Maryam Kavousi, Eco JC de Geus, Harold Snieder.
-> *Familial Correlation between Personality and Stress Exposure: Insights from the Multigenerational Lifelines Cohort Study.* European Journal of Personality (in revision).
+> Reichelt, F., Wang, R., Triatin, R. D., Bos, M., Kavousi, M., de Geus, E. J. C., Snieder, H. *Familial Correlation between Personality and Stress Exposure: Insights from the Multigenerational Lifelines Cohort Study.* European Journal of Personality (in revision).
 
 > Reichelt, F. (2026). *lifelines-personality-stress-correlations*. GitHub: https://github.com/FelixReichelt13/lifelines-personality-stress-correlations
 
 See [CITATION.cff](CITATION.cff) for machine-readable metadata.
 
-**Contact:** Felix Reichelt — University Medical Center Groningen — f.reichelt@umcg.nl — ORCID: *(to be added)*
+**Contact:** Felix Reichelt, University Medical Center Groningen, f.reichelt@umcg.nl
