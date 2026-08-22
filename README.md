@@ -221,7 +221,8 @@ This work was carried out in the context of the [Stress in Action](https://stres
 
 ## Citation
 
-> Reichelt, F., [co-authors]. *Familial Correlation between Personality and Stress Exposure: Insights from the Multigenerational Lifelines Cohort Study.* European Journal of Personality (in revision).
+> Reichelt, F., Rujia Wang, Rima D. Triatin 1, Martje Bos, Maryam Kavousi, Eco JC de Geus, Harold Snieder.
+> *Familial Correlation between Personality and Stress Exposure: Insights from the Multigenerational Lifelines Cohort Study.* European Journal of Personality (in revision).
 
 > Reichelt, F. (2026). *lifelines-personality-stress-correlations*. GitHub: https://github.com/FelixReichelt13/lifelines-personality-stress-correlations
 
