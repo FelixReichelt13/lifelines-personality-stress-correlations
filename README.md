@@ -1,6 +1,12 @@
 # Familial Correlation between Personality and Stress Exposure
 ### Insights from the Multigenerational Lifelines Cohort Study
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![R >= 4.2](https://img.shields.io/badge/R-%3E%3D%204.2-blue.svg)](https://www.r-project.org/)
+[![ASReml-R](https://img.shields.io/badge/ASReml--R-4.2%2B-success.svg)](https://vsni.co.uk/software/asreml-r/)
+[![Status: research code](https://img.shields.io/badge/status-research%20code-orange.svg)]()
+[![Open Science](https://img.shields.io/badge/Open%20Science-EJP%2FTOP%20aligned-brightgreen.svg)](OPEN_SCIENCE_STATEMENT.md)
+
 **Authors:** Reichelt, F., Wang, R., Triatin, R. D., Bos, M., Kavousi, M., de Geus, E. J. C., Snieder, H.  
 **Journal:** *European Journal of Personality* (manuscript EJP-26-4766, in revision)  
 **Institution:** University Medical Center Groningen · [Stress in Action](https://stress-in-action.nl) · [Lifelines](https://www.lifelines.nl)
