@@ -22,7 +22,7 @@ This repository holds the R code for the analyses, tables, and figures in the ma
 **Start here:** [`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd)  
 **License:** MIT. **Data:** no individual-level Lifelines data included ([details](#data-availability))
 
-Analysis scripts are in numbered folders (`02_Data_Preparation` through `07_Figures`). Flat copies for browsing are in [`00_All_Scripts/`](00_All_Scripts/). The full pipeline order is in [`run_all.R`](run_all.R) — including script **04a** after **04** (Table S9) and again after **05** (Table S12). Open-science documentation: [`OPEN_SCIENCE_STATEMENT.md`](OPEN_SCIENCE_STATEMENT.md).
+Analysis scripts are in numbered folders (`02_Data_Preparation` through `07_Figures`). Flat copies for browsing are in [`00_All_Scripts/`](00_All_Scripts/). Open-science documentation: [`OPEN_SCIENCE_STATEMENT.md`](OPEN_SCIENCE_STATEMENT.md).
 
 ## Contents
 
