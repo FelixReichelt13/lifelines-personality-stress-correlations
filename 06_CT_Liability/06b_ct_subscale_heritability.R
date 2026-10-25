@@ -50,7 +50,7 @@
 #### and the CT-total row.
 ####
 #### CT coding  : Moderate/severe thresholds per Bernstein et al. (2003):
-####              ea >= 12, pa >= 9, sa >= 7, en >= 14, pn >= 9 (each on
+####              ea > 12, pa > 9, sa > 7, en > 14, pn > 9 (each on
 ####              its own subscale sum). The CT-total row uses the same
 ####              any-subscale rule as `02_data_preparation.R`, not total >= 40.
 #### Version history:
