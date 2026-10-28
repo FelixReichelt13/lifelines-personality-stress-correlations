@@ -52,7 +52,7 @@ Stress exposure (5 phenotypes, all from Lifelines questionnaires):
 4. **Loneliness** — De Jong Gierveld 6-item short form (wave 2B).
 5. **Lack of social support** — SPF-IL Social Production Function
    Instrument for Level of Well-Being (Nieboer et al., 2005); 9 social-
-   well-being items (wave 2B). The raw score is reversed so that "higher
+   well-being items (wave 1A). The raw score is reversed so that "higher
    value = more stress".
 
 Personality (3 traits from the Lifelines NEO release):
@@ -155,12 +155,11 @@ further item-level missingness is mean-imputed by the same rule.
 Cronbach's α for every multi-item stress scale is computed in
 `02a_score_construction.R` Step 6 and written to
 `output/tables/table_S7e_internal_consistency.tsv` (Suppl. Table S7e).
-For the NEO scales we report published Dutch NEO-manual reliabilities
-(Hoekstra, Ormel & de Fruyt, 2007) because Lifelines releases only the
-SUM* totals and not the items: Neuroticism α ≈ 0.92 (48-item NEO-PI-R
-domain); Extraversion α ≈ 0.79 (12-item NEO-FFI domain, a ceiling for the
-11-item version administered); Conscientiousness α ≈ 0.81 (12-item NEO-FFI
-domain).
+Published internal-consistency estimates from the Dutch NEO manuals 
+(Hoekstra et al., 2007) provide background information on the psychometric 
+properties of the instruments. Personality traits were assessed using 
+the 48-item NEO-PI-R Neuroticism scale and the 12-item NEO-FFI 
+Extraversion and Conscientiousness scales, as described in the Supplementary Methods.
 
 # Cross-wave latent factors for LTE and LDI (script `02_data_preparation.R`)
 
