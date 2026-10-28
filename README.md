@@ -28,7 +28,7 @@ This repository holds the R code for the analyses, tables, and figures in the ma
 **Start here:** [`docs/Lifelines_Logbook.Rmd`](docs/Lifelines_Logbook.Rmd)  
 **License:** MIT. **Data:** no individual-level Lifelines data included ([details](#data-availability))
 
-Analysis scripts are in numbered folders (`02_Data_Preparation` through `07_Figures`). Flat copies for browsing are in [`00_All_Scripts/`](00_All_Scripts/). Open-science documentation: [`OPEN_SCIENCE_STATEMENT.md`](OPEN_SCIENCE_STATEMENT.md).
+Analysis scripts are organised in numbered folders (01_Config through 07_Figures). Open-science documentation is provided in OPEN_SCIENCE_STATEMENT.md. 
 
 ## Contents
 
@@ -46,7 +46,7 @@ Analysis scripts are in numbered folders (`02_Data_Preparation` through `07_Figu
 
 ## Phenotypes
 
-Eight phenotypes were analysed in adults aged ≥ 18 years (N ≈ 141,751) from the Lifelines extraction with three-generation pedigree data. Further sampling details are in [OPEN_SCIENCE_STATEMENT.md](OPEN_SCIENCE_STATEMENT.md).
+Eight phenotypes were analysed using Lifelines pedigree data from adult participants aged 18 years or older. Sample sizes differed across phenotypes and analyses according to measurement availability. The manuscript and supplementary information report the corresponding sample sizes. Further sampling details are in [OPEN_SCIENCE_STATEMENT.md](OPEN_SCIENCE_STATEMENT.md).
 
 | Phenotype | Instrument | Scale in primary analysis |
 |-----------|------------|---------------------------|
@@ -63,9 +63,9 @@ Item-level scoring, exclusions, and the cross-wave latent-factor step for LTE an
 
 ## ACE models with ASReml-R
 
-Univariate and bivariate ACE models were fit with ASReml-R (scripts 7–9; inverse-normal sensitivity in script 11). All models adjust for sex and a quadratic age trend. Additive genetic effects use the three-generation pedigree; shared environment is modelled at the residential household level. Full model specification and variance-component definitions are in the script headers and the logbook.
+Univariate and bivariate ACE models were fitted using ASReml-R. The main analyses are implemented in 04_Main_Analysis/04_univariate_heritability.R, 04_Main_Analysis/04b_bivariate_stress_stress.R, and 04_Main_Analysis/04c_bivariate_personality_stress.R. Inverse-normal sensitivity analyses are implemented in 05_Sensitivity/05_sensitivity_int.R. All models adjust for sex, age, and age squared. Additive genetic covariance is modelled using pedigree relatedness, while shared household effects are estimated using household identifiers derived from reported co-residence and postal-code matching among participating relatives. These identifiers may also capture broader residential or contextual similarities. Full model specification and variance-component definitions are in the script headers and the logbook.
 
-### Univariate (script 7)
+### Univariate (script 04)
 
 For each phenotype, scripts 7 and 11 fit **three nested submodels** (ACE, AE, CE) with boundary-corrected likelihood-ratio tests and information criteria:
 
@@ -79,7 +79,7 @@ For each phenotype, scripts 7 and 11 fit **three nested submodels** (ACE, AE, CE
 
 Wide outputs **S8b** / **S8c** (from script **04**) feed script **04a**, which writes manuscript **Table S9** (long ACE model comparison, one row per nested model). After the inverse-normal sensitivity run (**05**), **04a** reads **S11b** / **S11c** and writes **Table S12** (INT long model comparison). Raw ASReml `varcomp` and fixed effects go to **S8d** / **S8e**.
 
-### Bivariate (scripts 8, 9, 11)
+### Bivariate (scripts 04b and 04c)
 
 Two-trait REML is used for all 25 pairings. Each pair yields phenotypic correlation (*r*<sub>P</sub>: estimate + SE + 95 % CI; **no LRT**), plus *r*<sub>g</sub>, *r*<sub>c</sub>, and *r*<sub>e</sub> each tested with a **separate 1-df LRT** (full model vs sub-model with that cross-trait covariance fixed to zero). Bonferroni correction: 25 pairings × 3 correlations = **75** tests (α = .05/75 ≈ .000667).
 
@@ -155,7 +155,7 @@ Individual-level Lifelines data cannot be shared because of the participant cons
 
 ## Open Science
 
-EJP Open Materials compliance: [OPEN_SCIENCE_STATEMENT.md](OPEN_SCIENCE_STATEMENT.md). Repository archived on Zenodo (DOI in `CITATION.cff`) at acceptance.
+The analysis scripts and methodological documentation are publicly available in this repository. Data-access restrictions, preregistration status, and further reporting information are documented in OPEN_SCIENCE_STATEMENT.md. A permanent archived DOI will be added after a validated release is deposited.
 
 ## Affiliation
 
