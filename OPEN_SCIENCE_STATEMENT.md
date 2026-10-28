@@ -60,7 +60,7 @@ the executable code in `01a_score_construction.R`.
 | De Jong Gierveld Loneliness Scale (6-item short form) | 6 (wave 2B) | de Jong Gierveld & van Tilburg, 2006 | <https://wiki.lifelines.nl/doku.php?id=loneliness_ls> |
 | SPF-IL Social Production Function Instrument | 9 social-well-being items (of 15 total) | Nieboer et al., 2005; Elsman et al., 2022 | <https://wiki.lifelines.nl/doku.php?id=social_functioning_spf-il> |
 | List of Threatening Experiences (LTE) | 12 binary events × 4 waves (1A, 1B, 1C, 2A) | Brugha & Cragg, 1990; Rosmalen et al., 2012 | <https://wiki.lifelines.nl/doku.php?id=stress_lte> |
-| Long-term Difficulties Inventory (LDI) | 9 domains × 4 waves (items 1 – 9) | Rosmalen et al., 2012 | <https://wiki.lifelines.nl/doku.php?id=stress_ldi> |
+| Long-term Difficulties Inventory (LDI) | The full instrument comprises 12 items in waves (1A, 1B, 1C, 2A) | Rosmalen et al., 2012 |
 | NEO-PI-R Neuroticism + NEO-FFI Extraversion / Conscientiousness | Neuroticism: 48-item NEO-PI-R scale covering six facets (range 48–240); Extraversion and Conscientiousness: 12-item NEO-FFI scales (range 12–60 each). All three personality scores were standardised before analysis. | Costa & McCrae, 1992; Hoekstra et al., 2007 | <https://wiki.lifelines.nl/doku.php?id=personality_neo>, <https://wiki.lifelines.nl/doku.php?id=personality_sum_scores_neo> |
 
 ## 4. Open data
