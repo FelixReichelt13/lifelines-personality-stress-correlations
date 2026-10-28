@@ -48,7 +48,7 @@ Stress exposure (5 phenotypes, all from Lifelines questionnaires):
    12 binary events at four waves (1A, 1B, 1C, 2A). Combined across waves
    via a one-factor `lavaan` SEM with FIML.
 3. **Long-term Difficulties Inventory (LDI)** — Rosmalen et al. (2012);
-   9 domain items at the same four waves; same lavaan factor procedure.
+   12 items at the same four waves; same lavaan factor procedure.
 4. **Loneliness** — De Jong Gierveld 6-item short form (wave 2B).
 5. **Lack of social support** — SPF-IL Social Production Function
    Instrument for Level of Well-Being (Nieboer et al., 2005); 9 social-
@@ -57,13 +57,10 @@ Stress exposure (5 phenotypes, all from Lifelines questionnaires):
 
 Personality (3 traits from the Lifelines NEO release):
 
-6. **Neuroticism** — NEO-PI-R 48-item six-facet domain sum (anxiety, anger-
-   hostility, depression, self-consciousness, impulsiveness, vulnerability;
-   6 × 8 items; range 48 – 240).
-7. **Extraversion** — NEO-FFI domain SUM3 (11 items administered; one FFI
-   item was omitted by Lifelines, so the Lifelines `SUM3` rule
-   `round((SUM2 / NVALID) × 12)` rescales the score to a 12-item-equivalent
-   12 – 60 analytic scale).
+6. **Neuroticism** — Personality scores were obtained from the Lifelines NEO-derived variables. 
+The SUM3 scoring procedure uses available item responses and mean imputation to express domain 
+scores on the standard scale metric. For NEO-FFI domains, this corresponds to a 12-item metric.
+7. **Extraversion** — NEO-FFI domain SUM3 (12 items; 12 – 60).
 8. **Conscientiousness** — NEO-FFI domain SUM3 (12 items; 12 – 60).
 
 All three personality variables are z-standardised before variance
