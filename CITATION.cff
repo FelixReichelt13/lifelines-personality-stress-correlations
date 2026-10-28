@@ -16,13 +16,18 @@ title: >-
   Lifelines Cohort Study
 
 abstract: >-
-  R and ASReml-R code, R Markdown logbook and Open Science
-  documentation reproducing every figure and supplementary table of
-  the accompanying manuscript. The repository covers item-level
-  scoring, pedigree-based univariate and bivariate variance
-  decomposition, an inverse-normal sensitivity analysis,
-  liability-scale heritability of dichotomised childhood trauma and
-  the full set of supplementary figures and tables.
+   R and ASReml-R scripts and methodological documentation supporting
+  the analysis of personality and self-reported stress exposures in
+  the Lifelines Cohort Study. The pipeline covers phenotype scoring,
+  pedigree-based variance decomposition, sensitivity analyses,
+  liability-scale analyses, and figure generation.
+  Reproduction of the original analyses requires authorised access
+  to Lifelines data and the relevant software environment.
+  The repository covers item-level scoring, pedigree-based 
+  univariate and bivariate variance decomposition, an 
+  inverse-normal sensitivity analysis, liability-scale heritability 
+  of dichotomised childhood trauma and the full set of supplementary 
+  figures and tables.
 
 type: software
 version: "1.0.0-pre"
