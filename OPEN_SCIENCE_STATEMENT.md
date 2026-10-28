@@ -1,27 +1,24 @@
 # Open Science Statement
 
-This document documents compliance with the *European Journal of Personality*
-(EJP) Open Science Policy, which implements the **Transparency and Openness
-Promotion (TOP) Guidelines**. The eight EJP standards are addressed one by
-one below.
+This document describes the availability of the study materials, data, and analysis scripts, 
+together with the reporting status of the eight European Journal of Personality Open Science standards. 
+Where a requirement cannot be fully met, the relevant limitations are explained.
 
 ## Permanent links
 
 | Item | URL |
 |---|---|
-| Public repository (analysis scripts + logbook) | `<https://github.com/FelixReichelt13/lifelines-personality-stress-correlations>` *(switched to public at acceptance; tagged `v1.0`)* |
-| Archived snapshot (Zenodo DOI) | `10.5281/zenodo.<TBD>` *(minted at acceptance; see `CITATION.cff`)* |
+| Public repository and documentation: | <https://github.com/FelixReichelt13/lifelines-personality-stress-correlations> |
+| Archived release | Not yet available; DOI to be added after archiving. |
 | Lifelines cohort information and data access | <https://www.lifelines.nl/researcher> |
 | Lifelines cohort overview paper (Sijtsma et al., 2022) | <https://doi.org/10.1093/ije/dyab257> |
 | ASReml-R 4.2 (commercial software for ACE models) | <https://vsni.co.uk/software/asreml-r> |
 
 ## 1. Preregistration
 
-Not preregistered. The analyses are secondary use of an existing population-based
-cohort (Klijs et al., 2015; Sijtsma et al., 2022) with a fixed set of pre-existing
-measurement waves and questionnaires. Specific bivariate hypotheses for the
-25 primary stress × stress and personality × stress pairings were specified
-internally before the analyses were run.
+The hypotheses and analysis plan were not preregistered. 
+This study involved secondary analysis of existing data from the Lifelines Cohort Study. 
+The primary hypotheses and sensitivity analyses are described in the manuscript and supplementary information.
 
 The following analyses are explicitly *exploratory*:
 
@@ -38,7 +35,7 @@ available Lifelines extraction.
 | Quantity | Value |
 |---|---|
 | Total Lifelines cohort | 152,722 |
-| Adults aged ≥ 18 yr (analytic sample) | 141,751 |
+| Adults aged ≥ 18 yr (analytic sample) |Adult eligibility was defined as age ≥ 18 years. The number of participants included in each analysis varied according to phenotype availability and model requirements. Phenotype-specific sample sizes and bivariate sample sizes are reported in the manuscript and supplementary information.|
 | Multigenerational families | 30,914 |
 | Singletons | 40,496 |
 | Demographic composition | Northern Netherlands, ~58 % female, mean age ~46 yr (range 18 – 93) |
@@ -64,7 +61,7 @@ the executable code in `01a_score_construction.R`.
 | SPF-IL Social Production Function Instrument | 9 social-well-being items (of 15 total) | Nieboer et al., 2005; Elsman et al., 2022 | <https://wiki.lifelines.nl/doku.php?id=social_functioning_spf-il> |
 | List of Threatening Experiences (LTE) | 12 binary events × 4 waves (1A, 1B, 1C, 2A) | Brugha & Cragg, 1990; Rosmalen et al., 2012 | <https://wiki.lifelines.nl/doku.php?id=stress_lte> |
 | Long-term Difficulties Inventory (LDI) | 9 domains × 4 waves (items 1 – 9) | Rosmalen et al., 2012 | <https://wiki.lifelines.nl/doku.php?id=stress_ldi> |
-| NEO-PI-R Neuroticism + NEO-FFI Extraversion / Conscientiousness | Neuroticism: 48-item NEO-PI-R six-facet domain sum (range 48 – 240); Extraversion: 11 NEO-FFI items administered, analytic scale 12 – 60; Conscientiousness: 12 NEO-FFI items, range 12 – 60. All three are z-standardised before variance decomposition. | Costa & McCrae, 1992; Hoekstra et al., 2007 | <https://wiki.lifelines.nl/doku.php?id=personality_neo>, <https://wiki.lifelines.nl/doku.php?id=personality_sum_scores_neo> |
+| NEO-PI-R Neuroticism + NEO-FFI Extraversion / Conscientiousness | Neuroticism: 48-item NEO-PI-R scale covering six facets (range 48–240); Extraversion and Conscientiousness: 12-item NEO-FFI scales (range 12–60 each). All three personality scores were standardised before analysis. | Costa & McCrae, 1992; Hoekstra et al., 2007 | <https://wiki.lifelines.nl/doku.php?id=personality_neo>, <https://wiki.lifelines.nl/doku.php?id=personality_sum_scores_neo> |
 
 ## 4. Open data
 
@@ -79,11 +76,10 @@ Bona-fide researchers can apply for access at
 extraction used here is documented in [`data/README.md`](data/README.md) so
 that an approved researcher can recreate it.
 
-A small synthetic illustrative data set (matching the variable structure but
-not the values) will be deposited at acceptance on the same Zenodo record as
-the code release, so that scripts 03 – 07 can be smoke-tested without
-Lifelines access. It is a workflow demonstration only and is not suitable
-for substantive re-analysis.
+A synthetic dataset is not provided. Reproducing the primary variance decomposition analyses 
+requires access to the individual-level Lifelines data, including pedigree and household information. 
+The publicly available scripts and documentation support reproduction by researchers 
+who obtain authorised access to the relevant data and software.
 
 ## 5. Reproducible script
 
@@ -99,9 +95,9 @@ Reproducibility tiers:
 | Needs Lifelines data, no ASReml | `01a_score_construction.R`, `01_data_preparation.R`, `02_descriptives.R`, `09_age_brackets.R`, `11_cross_wave_correlations.R` | Lifelines secure environment |
 | Needs ASReml-R 4.2 and Lifelines data | `03_univariate_heritability.R`, `04_bivariate_stress_stress.R`, `05_bivariate_personality_stress.R`, `06_sensitivity_int.R`, `07_rrr_heritability_childhoodtrauma.R` | Lifelines secure environment + ASReml-R licence |
 
-Tool versions used by the author: R ≥ 4.3, RStudio 2025.05.x, ASReml-R 4.2
-(Butler et al., 2023). The pipeline does not depend on a specific minor
-version.
+The manuscript reports analyses conducted using R version 4.2 and ASReml-R. 
+The exact software environment and package versions should be taken from the final analysis session information. 
+ASReml-R requires a licence.
 
 ## 6. Transformations and non-standard scoring
 
@@ -131,17 +127,18 @@ fixed = phenotype ~ sex + age + I(age^2)                                # univar
 fixed = cbind(y1, y2) ~ trait + trait:sex + trait:age + trait:I(age^2)  # bivariate
 ```
 
-Sex captures well-established mean differences in personality and stress
-exposure (Suppl. Tables S7a – c). The quadratic term captures the dominant
-non-linear age trend across the 18 – 93 yr range (Suppl. Table S7d). TOP
-Standard 7 is satisfied at the *disclosure* level: covariate choices are
-justified, with no parallel uncorrected supplement table produced.
+Sex, age, and age squared were included to account for demographic differences in trait means before 
+estimating residual genetic and environmental variance components. The quadratic age term allows for 
+non-linear age associations. The primary analyses used these adjusted models. 
+Parallel unadjusted variance-decomposition results are not presented.
 
 ## 8. Effects
 
-Every estimate is reported with **effect size** (variance proportion or
-correlation), **standard error** (from ASReml `vpredict()`), **95 % CI**,
-and **exact two-sided p-value**.
+Variance proportions and correlations are reported with corresponding standard errors, 
+and confidence intervals are provided where available. Statistical significance of variance components 
+and cross-trait covariances was evaluated using the likelihood-ratio tests described in the manuscript. 
+The supplementary tables provide the corresponding test statistics and p-values, 
+with very small p-values sometimes reported as p < .001.
 
 Two separate Bonferroni families are applied for the primary analyses;
 sensitivity and exploratory analyses are not corrected. The design follows
@@ -171,25 +168,24 @@ are retained in the internal audit file (`12_significance_audit.R`) only;
 they can mislead near boundaries (rg ≈ ±1, c² ≈ 0).
 
 Internal consistency (Cronbach's α) is computed in `01a_score_construction.R`
-Step 6 for the multi-item stress scales. For the NEO scales we quote
-published Dutch NEO manual alphas (Hoekstra, Ormel & de Fruyt, 2007):
-NEO-PI-R Neuroticism α ≈ 0.92; NEO-FFI Extraversion α ≈ 0.79 (ceiling for
-the 11-item version administered); NEO-FFI Conscientiousness α ≈ 0.81.
+Step 6 for the multi-item stress scales. Published reliability estimates for 
+the Dutch NEO instruments are distinguished from internal-consistency estimates 
+calculated in the present study. 
 
 ## Compliance summary
 
 | EJP standard | Compliant? | Where |
 |---|---|---|
-| 1. Preregistration | Disclosed (not preregistered, with rationale) | §1 |
-| 2. Sampling | Yes — full sample, justified exclusions | §2 |
-| 3. Open material | Yes — every measure documented in `01a` + logbook §4 | §3 |
-| 4. Open data | Closed access, governance-restricted, full access procedure | §4 |
-| 5. Reproducible script | Yes — public repository + Zenodo at acceptance | §5 |
+| 1. Preregistration | Not preregistered, disclosed | §1 |
+| 2. Sampling | Yes — Sampling information reported | §2 |
+| 3. Open material | Public documentation available | §3 |
+| 4. Open data | Closed access | §4 |
+| 5. Reproducible script |Publicly available | §5 |
 | 6. Transformations | Yes — raw + INT sensitivity; standard imputation conventions | §6 |
 | 7. Covariates | Yes — sex, age, age² with documented rationale | §7 |
-| 8. Effects | Yes — effect sizes + SEs + 95 % CIs + exact *p* + Bonferroni + Cronbach's α | §8 |
+| 8. Effects | Yes — 	Estimates and tests reported | §8 |
 
-EJP Open-Science badges this submission can apply for: **Open Materials**
-(eligible). **Open Data** (not eligible — Lifelines individual-level data
-are governance-restricted). **Preregistered** (not eligible — secondary-use
-cohort analyses).
+The authors request consideration for the Open Materials badge on the basis of the publicly 
+accessible study documentation and analysis materials. Individual-level Lifelines data 
+are not openly available, and the study was not preregistered. 
+Badge eligibility is determined by the journal.
